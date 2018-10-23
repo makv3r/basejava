@@ -3,7 +3,7 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-
+    //интересно эти изменения там будут
     void clear() {
     }
 
