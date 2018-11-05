@@ -4,6 +4,10 @@
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
     //интересно эти изменения там будут
+    //12321
+    //654789
+
+
     void clear() {
     }
 
