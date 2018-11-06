@@ -52,7 +52,7 @@ public class ArrayStorage {
     Resume[] getAll() {
         Resume[] tmp = new Resume[size];
         for (int i = 0; i < size; i++) {
-            tmp[i] = this.storage[i];
+            tmp[i] = storage[i];
         }
         return tmp;
         //return Arrays.copyOfRange(storage, 0, this.size());
