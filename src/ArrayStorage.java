@@ -13,7 +13,7 @@ public class ArrayStorage {
     }
 
     void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage,0,size,null);
         size = 0;
     }
 
@@ -21,7 +21,7 @@ public class ArrayStorage {
         if (size == storage.length) { // Проверку на переполнение
             System.out.println("Stop It! Size will exceed limit.");
         }
-        else if (search(r.uuid) != -1) { // Проверку на повторение
+        else if (getIndex(r.getUuid()) != -1) { // Проверку на повторение
             System.out.println("Resume already exist.");
         }
         else {
@@ -30,19 +30,19 @@ public class ArrayStorage {
         }
     }
 
-    void update(Resume r, String updateTo) {
-        int i = search(r.uuid);
+    void update(Resume r) {
+        int i = getIndex(r.getUuid());
         if (i == -1) {
             System.out.println("Resume not found.");
         }
         else {
-            storage[i].uuid = updateTo;
+            storage[i] = r;
         }
     }
 
-    int search(String uuid) { // Избавляет от дублирования в коде ArrayStorage
+    public int getIndex(String uuid) { // Избавляет от дублирования в коде ArrayStorage
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
@@ -50,7 +50,7 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        int i = search(uuid);
+        int i = getIndex(uuid);
 
         if (i == -1) {
             System.out.println("Resume not found.");
@@ -62,7 +62,7 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int i = search(uuid);
+        int i = getIndex(uuid);
 
         if (i == -1) {
             System.out.println("Resume not found.");
