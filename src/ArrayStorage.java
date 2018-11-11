@@ -5,7 +5,8 @@ import java.util.Arrays;
  */
 
 public class ArrayStorage {
-    Resume[] storage = new Resume[10_000];
+    public final static int MAX_SIZE = 10_000;
+    Resume[] storage = new Resume[MAX_SIZE];
     private int size = 0;
 
     int size() {
@@ -18,7 +19,7 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (size == storage.length) { // Проверку на переполнение
+        if (size == MAX_SIZE) { // Проверку на переполнение
             System.out.println("Stop It! Size will exceed limit.");
         } else if (getIndex(r.getUuid()) != -1) { // Проверку на повторение
             System.out.println("Resume already exist.");
@@ -37,13 +38,16 @@ public class ArrayStorage {
         }
     }
 
-    private int getIndex(String uuid) { // Избавляет от дублирования в коде ArrayStorage
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return i;
-            }
+    void delete(String uuid) {
+        int i = getIndex(uuid);
+
+        if (i == -1) {
+            System.out.println("Resume not found.");
+        } else {
+            storage[i] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
         }
-        return -1;
     }
 
     Resume get(String uuid) {
@@ -57,20 +61,17 @@ public class ArrayStorage {
         }
     }
 
-    void delete(String uuid) {
-        int i = getIndex(uuid);
-
-        if (i == -1) {
-            System.out.println("Resume not found.");
-        } else {
-            storage[i] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        }
-    }
-
     Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
+    }
+
+    private int getIndex(String uuid) { // Избавляет от дублирования в коде ArrayStorage
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 }
