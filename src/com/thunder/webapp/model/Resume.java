@@ -1,3 +1,5 @@
+package com.thunder.webapp.model;
+
 /**
  * Initial resume class
  */
