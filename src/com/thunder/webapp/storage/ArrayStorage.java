@@ -2,31 +2,16 @@ package com.thunder.webapp.storage;
 
 import com.thunder.webapp.model.Resume;
 
-import java.util.Arrays;
-
 /**
  * Array based storage for Resumes
  */
-
-public class ArrayStorage {
-    public final static int MAX_SIZE = 10_000;
-    private Resume[] storage = new Resume[MAX_SIZE];
-    private int size = 0;
-
-    public int size() {
-        return size;
-    }
-
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
+public class ArrayStorage extends AbstractArrayStorage {
 
     public void save(Resume r) {
-        if (size == MAX_SIZE) { // Проверку на переполнение
+        if (size == STORAGE_LIMIT) {
             System.out.println("Stop It! Size will exceed limit.");
-        } else if (getIndex(r.getUuid()) != -1) { // Проверку на повторение
-            System.out.println("Resume already exist.");
+        } else if (getIndex(r.getUuid()) >= 0) {
+            System.out.println("Resume " + r.getUuid() + " already exist.");
         } else {
             storage[size] = r;
             size++;
@@ -35,8 +20,8 @@ public class ArrayStorage {
 
     public void update(Resume r) {
         int i = getIndex(r.getUuid());
-        if (i == -1) {
-            System.out.println("Resume not found.");
+        if (i < 0) {
+            System.out.println("Resume " + r.getUuid() + " not found.");
         } else {
             storage[i] = r;
         }
@@ -45,8 +30,8 @@ public class ArrayStorage {
     public void delete(String uuid) {
         int i = getIndex(uuid);
 
-        if (i == -1) {
-            System.out.println("Resume not found.");
+        if (i < 0) {
+            System.out.println("Resume " + uuid + " not found.");
         } else {
             storage[i] = storage[size - 1];
             storage[size - 1] = null;
@@ -54,22 +39,7 @@ public class ArrayStorage {
         }
     }
 
-    public Resume get(String uuid) {
-        int i = getIndex(uuid);
-
-        if (i == -1) {
-            System.out.println("Resume not found.");
-            return null;
-        } else {
-            return storage[i];
-        }
-    }
-
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
-    }
-
-    private int getIndex(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -77,5 +47,4 @@ public class ArrayStorage {
         }
         return -1;
     }
-
 }
