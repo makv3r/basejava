@@ -4,9 +4,7 @@ import com.thunder.webapp.model.Resume;
 import com.thunder.webapp.storage.ArrayStorage;
 import com.thunder.webapp.storage.Storage;
 
-/**
- * Test for your com.thunder.webapp.storage.ArrayStorage implementation
- */
+
 public class MainTestArrayStorage {
     private static final Storage ARRAY_STORAGE = new ArrayStorage();
 
@@ -25,7 +23,7 @@ public class MainTestArrayStorage {
         Resume r4 = new Resume();
         r4.setUuid("uuid3");
         ARRAY_STORAGE.update(r4);
-        r4.setUuid("NEW-uuid3"); // ТАДА ХАК!!
+        r4.setUuid("NEW-uuid3"); // Warning
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());

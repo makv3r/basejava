@@ -1,8 +1,6 @@
 package com.thunder.webapp.model;
 
-/**
- * com.thunder.webapp.model.Resume class
- */
+
 public class Resume implements Comparable<Resume> {
 
     // Unique identifier
