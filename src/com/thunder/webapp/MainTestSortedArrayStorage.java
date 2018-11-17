@@ -11,14 +11,12 @@ public class MainTestSortedArrayStorage {
     public static void main(String[] args) {
 
         for (int i = 10_000; i > 0; i--) {
-            Resume r = new Resume();
-            r.setUuid("uuid" + i);
+            Resume r = new Resume("uuid" + i);
             ARRAY_STORAGE.save(r);
         }
 
         for (int i = 10_000; i > 0; i--) {
-            Resume r = new Resume();
-            r.setUuid("uuid" + i);
+            Resume r = new Resume("uuid" + i);
             if (i % 2 == 0) ARRAY_STORAGE.delete(r.getUuid());
         }
 
@@ -27,12 +25,9 @@ public class MainTestSortedArrayStorage {
         ARRAY_STORAGE.clear();
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        Resume r1 = new Resume();
-        r1.setUuid("uuid3");
-        Resume r2 = new Resume();
-        r2.setUuid("uuid34");
-        Resume r3 = new Resume();
-        r3.setUuid("uuid265");
+        Resume r1 = new Resume("uuid3");
+        Resume r2 = new Resume("uuid34");
+        Resume r3 = new Resume("uuid265");
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -41,15 +36,13 @@ public class MainTestSortedArrayStorage {
         printAll();
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        Resume r4 = new Resume();
-        r4.setUuid("uuid3");
+        Resume r4 = new Resume("uuid3");
         ARRAY_STORAGE.update(r4);
-        r4.setUuid("NEW-uiud3"); // Warning
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r2.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        //System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());

@@ -1,5 +1,8 @@
 package com.thunder.webapp.storage;
 
+import com.thunder.webapp.exception.ExistStorageException;
+import com.thunder.webapp.exception.NotExistStorageException;
+import com.thunder.webapp.exception.StorageException;
 import com.thunder.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -18,9 +21,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume r) {
         int index = getIndex(r.getUuid());
         if (size == STORAGE_LIMIT) {
-            System.out.println("Stop It! Size will exceed limit.");
+            throw new StorageException("Stop It! Size will exceed limit.", r.getUuid());
         } else if (index >= 0) {
-            System.out.println("Resume " + r.getUuid() + " already exist.");
+            throw new ExistStorageException(r.getUuid());
         } else {
             saveResume(r, index);
             size++;
@@ -30,7 +33,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume r) {
         int index = getIndex(r.getUuid());
         if (index < 0) {
-            System.out.println("Resume " + r.getUuid() + " not found.");
+            throw new NotExistStorageException(r.getUuid());
         } else {
             storage[index] = r;
         }
@@ -40,7 +43,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(uuid);
 
         if (index < 0) {
-            System.out.println("Resume " + uuid + " not found.");
+            throw new NotExistStorageException(uuid);
         } else {
             deleteResume(index);
             storage[size - 1] = null;
@@ -57,8 +60,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(uuid);
 
         if (index < 0) {
-            System.out.println("Resume " + uuid + " not found.");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
