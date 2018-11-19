@@ -59,7 +59,7 @@ public abstract class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
-            Assert.fail();
+            Assert.fail("StackOverflowed!");
         }
         storage.save(new Resume());
     }
@@ -68,7 +68,7 @@ public abstract class AbstractArrayStorageTest {
     public void update() throws Exception {
         Resume resume = new Resume(UUID_1);
         storage.update(resume);
-        Assert.assertEquals(resume, storage.get(resume.getUuid()));
+        Assert.assertSame(resume, storage.get(resume.getUuid()));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -97,17 +97,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void get() throws Exception {
         Resume resume = storage.get(UUID_1);
-        Assert.assertTrue(resume == storage.get(UUID_1));
-    }
-
-    @Test
-    public void getAll() throws Exception {
-        Resume[] resumes = storage.getAll();
-        Assert.assertNotNull(resumes);
-        Assert.assertEquals(3, resumes.length);
-        Assert.assertTrue(resumes[0] == storage.get(UUID_1));
-        Assert.assertTrue(resumes[1] == storage.get(UUID_2));
-        Assert.assertTrue(resumes[2] == storage.get(UUID_3));
+        Assert.assertEquals(resume, RESUME_1);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -115,4 +105,11 @@ public abstract class AbstractArrayStorageTest {
         storage.get(UUID_4);
     }
 
+    @Test
+    public void getAll() throws Exception {
+        Resume[] resumes1 = storage.getAll();
+        Resume[] resumes2 = {RESUME_1, RESUME_2, RESUME_3};
+        Assert.assertEquals(resumes1.length, resumes2.length);
+        Assert.assertArrayEquals(resumes1, resumes2);
+    }
 }
