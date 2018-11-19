@@ -17,22 +17,8 @@ public class MainReflection {
         System.out.println(r);
 
         // invoke toString via reflection
-        Method method = r.getClass().getDeclaredMethod("toString", null);
+        Method method = r.getClass().getMethod("toString");
         System.out.println(method);
-
-        Resume r2 = new Resume();
-        System.out.println(method.invoke(r2));
+        System.out.println(method.invoke(r));
     }
 }
-
-/**
- uuid
- cfa07db4-37b8-438c-b8ec-02215cdbc30b
- new_uuid
- public java.lang.String com.thunder.webapp.model.Resume.toString()
- 1c1dc3e9-ebcf-4523-8ec9-bf2c3fcc972c
-*/
-
-
-
-
