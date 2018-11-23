@@ -2,7 +2,6 @@ package com.thunder.webapp.storage;
 
 import com.thunder.webapp.exception.ExistStorageException;
 import com.thunder.webapp.exception.NotExistStorageException;
-import com.thunder.webapp.exception.StorageException;
 import com.thunder.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,17 +9,17 @@ import org.junit.Test;
 
 
 public abstract class AbstractArrayStorageTest {
-    private Storage storage;
+    protected Storage storage;
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    protected static final String UUID_1 = "uuid1";
+    protected static final String UUID_2 = "uuid2";
+    protected static final String UUID_3 = "uuid3";
+    protected static final String UUID_4 = "uuid4";
 
-    private static final Resume RESUME_1 = new Resume(UUID_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2);
-    private static final Resume RESUME_3 = new Resume(UUID_3);
-    private static final Resume RESUME_4 = new Resume(UUID_4);
+    protected static final Resume RESUME_1 = new Resume(UUID_1);
+    protected static final Resume RESUME_2 = new Resume(UUID_2);
+    protected static final Resume RESUME_3 = new Resume(UUID_3);
+    protected static final Resume RESUME_4 = new Resume(UUID_4);
 
     protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -49,19 +48,6 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExist() throws Exception {
         storage.save(new Resume(UUID_1));
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveStackOverflow() throws Exception {
-        storage.clear();
-        try {
-            for (int i = 0; i < 10_000; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail("StackOverflowed!");
-        }
-        storage.save(new Resume());
     }
 
     @Test
