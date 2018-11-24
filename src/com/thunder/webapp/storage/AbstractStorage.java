@@ -7,7 +7,7 @@ import com.thunder.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract Object getIndex(String uuid);
+    protected abstract Object getKey(String uuid);
 
     protected abstract void doSave(Resume r, Object key);
 
@@ -18,36 +18,39 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void doDelete(Object key);
 
     public void save(Resume r) {
-        Object key = getKey(true, r.getUuid());
+        Object key = getNotExistKey(r.getUuid());
         doSave(r, key);
     }
 
     public void update(Resume r) {
-        Object key = getKey(false, r.getUuid());
+        Object key = getExistKey(r.getUuid());
         doUpdate(r, key);
     }
 
     public void delete(String uuid) {
-        Object key = getKey(false, uuid);
+        Object key = getExistKey(uuid);
         doDelete(key);
     }
 
     public Resume get(String uuid) {
-        Object key = getKey(false, uuid);
+        Object key = getExistKey(uuid);
         return doGet(key);
     }
 
-    private Object getKey(boolean contain, String uuid) {
-        Object key = getIndex(uuid);
+    protected boolean checkKey(Object key) {
+        if ((int) key >= 0) return true;
+        return false;
+    }
 
-        if (key instanceof String) {
-            if (contain) throw new ExistStorageException(uuid);
-        } else if (contain && (int) key >= 0) {
-            throw new ExistStorageException(uuid);
-        } else if (!contain && (int) key < 0) {
-            throw new NotExistStorageException(uuid);
-        }
+    private Object getExistKey(String uuid) {
+        Object key = getKey(uuid);
+        if (!checkKey(key)) throw new NotExistStorageException(uuid);
+        return key;
+    }
 
+    private Object getNotExistKey(String uuid) {
+        Object key = getKey(uuid);
+        if (checkKey(key)) throw new ExistStorageException(uuid);
         return key;
     }
 }

@@ -59,5 +59,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract void deleteResume(int index);
 
-    protected abstract Object getIndex(String uuid);
+    protected abstract Object getKey(String uuid);
 }

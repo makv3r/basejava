@@ -3,7 +3,6 @@ package com.thunder.webapp.storage;
 
 import com.thunder.webapp.model.Resume;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,11 +46,10 @@ public class ListStorage extends AbstractStorage {
         return storage.toArray(new Resume[storage.size()]);
     }
 
-    protected Object getIndex(String uuid) {
+    protected Object getKey(String uuid) {
         int index = 0;
-        Iterator<Resume> iterator = storage.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().getUuid().equals(uuid)) {
+        for (Resume tmp : storage) {
+            if (tmp.getUuid().equals(uuid)) {
                 return index;
             }
             index++;
