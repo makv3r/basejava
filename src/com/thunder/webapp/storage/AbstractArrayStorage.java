@@ -55,6 +55,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
+    @Override
+    protected boolean checkKey(Object key) {
+        return (int) key >= 0;
+    }
+
     protected abstract void saveResume(Resume r, int index);
 
     protected abstract void deleteResume(int index);

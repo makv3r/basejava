@@ -17,6 +17,8 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void doDelete(Object key);
 
+    protected abstract boolean checkKey(Object key);
+
     public void save(Resume r) {
         Object key = getNotExistKey(r.getUuid());
         doSave(r, key);
@@ -35,11 +37,6 @@ public abstract class AbstractStorage implements Storage {
     public Resume get(String uuid) {
         Object key = getExistKey(uuid);
         return doGet(key);
-    }
-
-    protected boolean checkKey(Object key) {
-        if ((int) key >= 0) return true;
-        return false;
     }
 
     private Object getExistKey(String uuid) {

@@ -56,4 +56,8 @@ public class ListStorage extends AbstractStorage {
         }
         return -1;
     }
+
+    protected boolean checkKey(Object key) {
+        return (int) key >= 0;
+    }
 }
