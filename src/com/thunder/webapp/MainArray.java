@@ -1,7 +1,8 @@
 package com.thunder.webapp;
 
 import com.thunder.webapp.model.Resume;
-import com.thunder.webapp.storage.ArrayStorage;
+import com.thunder.webapp.storage.ListStorage;
+import com.thunder.webapp.storage.Storage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +10,11 @@ import java.io.InputStreamReader;
 
 
 public class MainArray {
-    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    //private static final Storage STORAGE = new ArrayStorage();
+    //private static final Storage STORAGE = new SortedArrayStorage();
+    private static final Storage STORAGE = new ListStorage();
+    //private static final Storage STORAGE = new MapUuidStorage();
+    //private static final Storage STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -30,27 +35,27 @@ public class MainArray {
                     printAll();
                     break;
                 case "size":
-                    System.out.println(ARRAY_STORAGE.size());
+                    System.out.println(STORAGE.size());
                     break;
                 case "save":
                     r = new Resume(uuid);
-                    ARRAY_STORAGE.save(r);
+                    STORAGE.save(r);
                     printAll();
                     break;
                 case "update":
                     r = new Resume(uuid);
-                    ARRAY_STORAGE.update(r);
+                    STORAGE.update(r);
                     printAll();
                     break;
                 case "delete":
-                    ARRAY_STORAGE.delete(uuid);
+                    STORAGE.delete(uuid);
                     printAll();
                     break;
                 case "get":
-                    System.out.println(ARRAY_STORAGE.get(uuid));
+                    System.out.println(STORAGE.get(uuid));
                     break;
                 case "clear":
-                    ARRAY_STORAGE.clear();
+                    STORAGE.clear();
                     printAll();
                     break;
                 case "exit":
@@ -63,12 +68,11 @@ public class MainArray {
     }
 
     static void printAll() {
-        Resume[] all = ARRAY_STORAGE.getAll();
         System.out.println("----------------------------");
-        if (all.length == 0) {
+        if (STORAGE.size() == 0) {
             System.out.println("Empty");
         } else {
-            for (Resume r : all) {
+            for (Resume r : STORAGE.getAllSorted()) {
                 System.out.println(r);
             }
         }

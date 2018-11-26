@@ -4,6 +4,9 @@ import com.thunder.webapp.exception.ExistStorageException;
 import com.thunder.webapp.exception.NotExistStorageException;
 import com.thunder.webapp.model.Resume;
 
+import java.util.Collections;
+import java.util.List;
+
 
 public abstract class AbstractStorage implements Storage {
 
@@ -18,6 +21,8 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void doDelete(Object key);
 
     protected abstract boolean checkKey(Object key);
+
+    protected abstract List<Resume> getAll();
 
     public void save(Resume r) {
         Object key = getNotExistKey(r.getUuid());
@@ -37,6 +42,12 @@ public abstract class AbstractStorage implements Storage {
     public Resume get(String uuid) {
         Object key = getExistKey(uuid);
         return doGet(key);
+    }
+
+    public List<Resume> getAllSorted() {
+        List<Resume> list = getAll();
+        Collections.sort(list);
+        return list;
     }
 
     private Object getExistKey(String uuid) {
