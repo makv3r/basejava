@@ -6,11 +6,6 @@ import com.thunder.webapp.model.Resume;
 public class MapResumeStorage extends AbstractMapStorage {
 
     @Override
-    public void doUpdate(Resume r, Object key) {
-        storage.replace(r.getUuid(), r);
-    }
-
-    @Override
     public void doDelete(Object key) {
         storage.remove(((Resume) key).getUuid());
     }

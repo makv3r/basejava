@@ -1,23 +1,30 @@
 package com.thunder.webapp;
 
 import com.thunder.webapp.model.Resume;
-import com.thunder.webapp.storage.SortedArrayStorage;
+import com.thunder.webapp.storage.MapResumeStorage;
 import com.thunder.webapp.storage.Storage;
 
 
 public class MainTestStorage {
     //private static final Storage STORAGE = new ArrayStorage();
-    private static final Storage STORAGE = new SortedArrayStorage();
+    //private static final Storage STORAGE = new SortedArrayStorage();
     //private static final Storage STORAGE = new ListStorage();
     //private static final Storage STORAGE = new MapUuidStorage();
-    //private static final Storage STORAGE = new MapResumeStorage();
+    private static final Storage STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume("uuid3", "Гарри Поттер");
-        Resume r2 = new Resume("uuid2", "Гермиона Грейнджер");
-        Resume r3 = new Resume("uuid1", "Рон Уизли");
-        Resume r4 = new Resume("uuid1", "Рон Уизли");
 
+        Resume r1 = new Resume("uuid1", "Гарри Поттер");
+        Resume r2 = new Resume("uuid2", "Гермиона Грейнджер");
+        Resume r3 = new Resume("uuid3", "Рон Уизли");
+        Resume r4 = new Resume("uuid3", "Том Реддл");
+
+/*
+        Resume r1 = new Resume("Гарри Поттер");
+        Resume r2 = new Resume("Гермиона Грейнджер");
+        Resume r3 = new Resume("Рон Уизли");
+        Resume r4 = new Resume("Том Реддл");
+*/
         try {
             for (int i = 0; i <= 10_000; i++) {
                 STORAGE.save(new Resume("uuid" + i));
@@ -40,7 +47,7 @@ public class MainTestStorage {
             System.out.println(e);
         }
 
-        System.out.println("Get r1: " + STORAGE.get(r1.getUuid()));
+        System.out.println("Get r3: " + STORAGE.get(r3.getUuid()));
         System.out.println("Size: " + STORAGE.size());
 
         try {

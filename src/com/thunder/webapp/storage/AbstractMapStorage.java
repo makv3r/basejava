@@ -2,7 +2,7 @@ package com.thunder.webapp.storage;
 
 import com.thunder.webapp.model.Resume;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +15,6 @@ public abstract class AbstractMapStorage extends AbstractStorage {
     protected abstract Object getKey(String uuid);
 
     protected abstract boolean checkKey(Object key);
-
-    public abstract void doUpdate(Resume r, Object key);
 
     public abstract void doDelete(Object key);
 
@@ -38,7 +36,12 @@ public abstract class AbstractMapStorage extends AbstractStorage {
     }
 
     @Override
+    public void doUpdate(Resume r, Object key) {
+        storage.replace(r.getUuid(), r);
+    }
+
+    @Override
     public List<Resume> getAll() {
-        return Arrays.asList(storage.values().toArray(new Resume[storage.size()]));
+        return new ArrayList<>(storage.values());
     }
 }

@@ -1,9 +1,8 @@
 package com.thunder.webapp.storage;
 
-
 import com.thunder.webapp.model.Resume;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,7 +43,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public List<Resume> getAll() {
-        return Arrays.asList(storage.toArray(new Resume[storage.size()]));
+        return new ArrayList<>(storage);
     }
 
     protected Object getKey(String uuid) {
