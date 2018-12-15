@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected final static int STORAGE_LIMIT = 10_000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -25,30 +25,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void doSave(Resume r, Object key) {
+    public void doSave(Resume r, Integer key) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Stop It! Size will exceed limit.", r.getUuid());
         } else {
-            saveResume(r, (Integer) key);
+            saveResume(r, key);
             size++;
         }
     }
 
     @Override
-    public void doUpdate(Resume r, Object key) {
-        storage[(Integer) key] = r;
+    public void doUpdate(Resume r, Integer key) {
+        storage[key] = r;
     }
 
     @Override
-    public void doDelete(Object key) {
-        deleteResume((Integer) key);
+    public void doDelete(Integer key) {
+        deleteResume(key);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    public Resume doGet(Object key) {
-        return storage[(Integer) key];
+    public Resume doGet(Integer key) {
+        return storage[key];
     }
 
     @Override
@@ -57,13 +57,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkKey(Object key) {
-        return (int) key >= 0;
+    protected boolean checkKey(Integer key) {
+        return key >= 0;
     }
 
     protected abstract void saveResume(Resume r, int index);
 
     protected abstract void deleteResume(int index);
 
-    protected abstract Object getKey(String uuid);
+    protected abstract Integer getKey(String uuid);
 }

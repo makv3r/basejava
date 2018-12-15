@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 
-public abstract class AbstractMapStorage extends AbstractStorage {
+public abstract class AbstractMapStorage<SK> extends AbstractStorage<SK> {
 
     protected Map<String, Resume> storage = new HashMap<>();
 
-    protected abstract Object getKey(String uuid);
+    protected abstract SK getKey(String uuid);
 
-    protected abstract boolean checkKey(Object key);
+    protected abstract boolean checkKey(SK key);
 
-    public abstract void doDelete(Object key);
+    public abstract void doDelete(SK key);
 
-    public abstract Resume doGet(Object key);
+    public abstract Resume doGet(SK key);
 
     @Override
     public int size() {
@@ -31,12 +31,12 @@ public abstract class AbstractMapStorage extends AbstractStorage {
     }
 
     @Override
-    public void doSave(Resume r, Object key) {
+    public void doSave(Resume r, SK key) {
         storage.put(r.getUuid(), r);
     }
 
     @Override
-    public void doUpdate(Resume r, Object key) {
+    public void doUpdate(Resume r, SK key) {
         storage.replace(r.getUuid(), r);
     }
 

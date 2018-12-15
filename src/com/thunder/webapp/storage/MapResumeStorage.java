@@ -3,25 +3,25 @@ package com.thunder.webapp.storage;
 import com.thunder.webapp.model.Resume;
 
 
-public class MapResumeStorage extends AbstractMapStorage {
+public class MapResumeStorage extends AbstractMapStorage<Resume> {
 
     @Override
-    public void doDelete(Object key) {
-        storage.remove(((Resume) key).getUuid());
+    public void doDelete(Resume key) {
+        storage.remove(key.getUuid());
     }
 
     @Override
-    public Resume doGet(Object key) {
-        return (Resume) key;
+    public Resume doGet(Resume key) {
+        return key;
     }
 
     @Override
-    protected Object getKey(String uuid) {
+    protected Resume getKey(String uuid) {
         return storage.get(uuid);
     }
 
     @Override
-    protected boolean checkKey(Object key) {
+    protected boolean checkKey(Resume key) {
         return key != null;
     }
 }

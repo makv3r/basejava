@@ -1,6 +1,9 @@
 package com.thunder.webapp.model;
 
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
@@ -8,13 +11,18 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
 
-    private String fullName;
+    private final String fullName;
+
+    private final Map<ContactType, ContactData> contacts = new EnumMap<>(ContactType.class);
+    private final Map<SectionType, SectionData> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid must not be null");
+        Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -23,17 +31,24 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
     public String getUuid() {
         return uuid;
     }
 
-    @Override
-    public String toString() {
-        return uuid + " " + fullName;
+    public Map<ContactType, ContactData> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, SectionData> getSections() {
+        return sections;
+    }
+
+    public void setContacts(ContactType type, ContactData data) {
+        contacts.put(type,data);
+    }
+
+    public void setSections(SectionType type, SectionData data) {
+        sections.put(type,data);
     }
 
     @Override
@@ -52,6 +67,16 @@ public class Resume implements Comparable<Resume> {
         int result = uuid.hashCode();
         result = 31 * result + fullName.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Resume{" +
+                "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", contacts=" + contacts +
+                ", sections=" + sections +
+                '}';
     }
 
     @Override

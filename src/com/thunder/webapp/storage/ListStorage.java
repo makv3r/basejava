@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
 
     protected List<Resume> storage = new LinkedList<>();
 
@@ -22,23 +22,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume r, Object index) {
+    protected void doSave(Resume r, Integer index) {
         storage.add(r);
     }
 
     @Override
-    public void doUpdate(Resume r, Object key) {
-        storage.set((int) key, r);
+    public void doUpdate(Resume r, Integer key) {
+        storage.set(key, r);
     }
 
     @Override
-    public void doDelete(Object key) {
-        storage.remove((int) key);
+    public void doDelete(Integer key) {
+        storage.remove(key.intValue());
     }
 
     @Override
-    public Resume doGet(Object key) {
-        return storage.get((int) key);
+    public Resume doGet(Integer key) {
+        return storage.get(key);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ListStorage extends AbstractStorage {
         return new ArrayList<>(storage);
     }
 
-    protected Object getKey(String uuid) {
+    protected Integer getKey(String uuid) {
         int index = 0;
         for (Resume tmp : storage) {
             if (tmp.getUuid().equals(uuid)) {
@@ -57,7 +57,7 @@ public class ListStorage extends AbstractStorage {
         return -1;
     }
 
-    protected boolean checkKey(Object key) {
-        return (int) key >= 0;
+    protected boolean checkKey(Integer key) {
+        return key >= 0;
     }
 }

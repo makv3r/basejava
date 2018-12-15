@@ -6,59 +6,73 @@ import com.thunder.webapp.model.Resume;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
 
-    protected abstract Object getKey(String uuid);
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    protected abstract void doSave(Resume r, Object key);
+    protected abstract SK getKey(String uuid);
 
-    protected abstract void doUpdate(Resume r, Object key);
+    protected abstract void doSave(Resume r, SK key);
 
-    protected abstract Resume doGet(Object key);
+    protected abstract void doUpdate(Resume r, SK key);
 
-    protected abstract void doDelete(Object key);
+    protected abstract Resume doGet(SK key);
 
-    protected abstract boolean checkKey(Object key);
+    protected abstract void doDelete(SK key);
+
+    protected abstract boolean checkKey(SK key);
 
     protected abstract List<Resume> getAll();
 
     public void save(Resume r) {
-        Object key = getNotExistKey(r.getUuid());
+        LOG.info("Save " + r);
+        SK key = getNotExistKey(r.getUuid());
         doSave(r, key);
     }
 
     public void update(Resume r) {
-        Object key = getExistKey(r.getUuid());
+        LOG.info("Update " + r);
+        SK key = getExistKey(r.getUuid());
         doUpdate(r, key);
     }
 
     public void delete(String uuid) {
-        Object key = getExistKey(uuid);
+        LOG.info("Delete " + uuid);
+        SK key = getExistKey(uuid);
         doDelete(key);
     }
 
     public Resume get(String uuid) {
-        Object key = getExistKey(uuid);
+        LOG.info("Get " + uuid);
+        SK key = getExistKey(uuid);
         return doGet(key);
     }
 
     public List<Resume> getAllSorted() {
+        LOG.info("getAllSorted");
         List<Resume> list = getAll();
         Collections.sort(list);
         return list;
     }
 
-    private Object getExistKey(String uuid) {
-        Object key = getKey(uuid);
-        if (!checkKey(key)) throw new NotExistStorageException(uuid);
+    private SK getExistKey(String uuid) {
+        SK key = getKey(uuid);
+        if (!checkKey(key)) {
+            LOG.warning("Resume " + uuid + " not exist");
+            throw new NotExistStorageException(uuid);
+        }
         return key;
     }
 
-    private Object getNotExistKey(String uuid) {
-        Object key = getKey(uuid);
-        if (checkKey(key)) throw new ExistStorageException(uuid);
+    private SK getNotExistKey(String uuid) {
+        SK key = getKey(uuid);
+        if (checkKey(key)) {
+            LOG.warning("Resume " + uuid + " already exist");
+            throw new ExistStorageException(uuid);
+        }
         return key;
     }
 }
