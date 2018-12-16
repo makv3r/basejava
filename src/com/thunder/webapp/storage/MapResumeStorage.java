@@ -6,22 +6,22 @@ import com.thunder.webapp.model.Resume;
 public class MapResumeStorage extends AbstractMapStorage<Resume> {
 
     @Override
-    public void doDelete(Resume key) {
-        storage.remove(key.getUuid());
+    public void doDelete(Resume resume) {
+        storage.remove(resume.getUuid());
     }
 
     @Override
-    public Resume doGet(Resume key) {
-        return key;
+    public Resume doGet(Resume resume) {
+        return resume;
     }
 
     @Override
-    protected Resume getKey(String uuid) {
+    protected Resume getSearchKey(String uuid) {
         return storage.get(uuid);
     }
 
     @Override
-    protected boolean checkKey(Resume key) {
-        return key != null;
+    protected boolean checkSearchKey(Resume resume) {
+        return resume != null;
     }
 }

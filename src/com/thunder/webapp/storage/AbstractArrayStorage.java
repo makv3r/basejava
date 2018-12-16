@@ -25,30 +25,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public void doSave(Resume r, Integer key) {
+    public void doSave(Resume resume, Integer index) {
         if (size == STORAGE_LIMIT) {
-            throw new StorageException("Stop It! Size will exceed limit.", r.getUuid());
+            throw new StorageException("Stop It! Size will exceed limit.", resume.getUuid());
         } else {
-            saveResume(r, key);
+            saveResume(resume, index);
             size++;
         }
     }
 
     @Override
-    public void doUpdate(Resume r, Integer key) {
-        storage[key] = r;
+    public void doUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
-    public void doDelete(Integer key) {
-        deleteResume(key);
+    public void doDelete(Integer index) {
+        deleteResume(index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    public Resume doGet(Integer key) {
-        return storage[key];
+    public Resume doGet(Integer index) {
+        return storage[index];
     }
 
     @Override
@@ -57,13 +57,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean checkKey(Integer key) {
-        return key >= 0;
+    protected boolean checkSearchKey(Integer index) {
+        return index >= 0;
     }
 
-    protected abstract void saveResume(Resume r, int index);
+    protected abstract void saveResume(Resume resume, int index);
 
     protected abstract void deleteResume(int index);
 
-    protected abstract Integer getKey(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
 }

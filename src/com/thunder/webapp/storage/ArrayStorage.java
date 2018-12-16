@@ -6,8 +6,8 @@ import com.thunder.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void saveResume(Resume r, int index) {
-        storage[size] = r;
+    protected void saveResume(Resume resume, int index) {
+        storage[size] = resume;
     }
 
     @Override
@@ -16,7 +16,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected Integer getKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int index = 0; index < size; index++) {
             if (storage[index].getUuid().equals(uuid)) {
                 return index;

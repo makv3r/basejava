@@ -12,14 +12,6 @@ public abstract class AbstractMapStorage<SK> extends AbstractStorage<SK> {
 
     protected Map<String, Resume> storage = new HashMap<>();
 
-    protected abstract SK getKey(String uuid);
-
-    protected abstract boolean checkKey(SK key);
-
-    public abstract void doDelete(SK key);
-
-    public abstract Resume doGet(SK key);
-
     @Override
     public int size() {
         return storage.size();
@@ -31,13 +23,13 @@ public abstract class AbstractMapStorage<SK> extends AbstractStorage<SK> {
     }
 
     @Override
-    public void doSave(Resume r, SK key) {
-        storage.put(r.getUuid(), r);
+    public void doSave(Resume resume, SK searchKey) {
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    public void doUpdate(Resume r, SK key) {
-        storage.replace(r.getUuid(), r);
+    public void doUpdate(Resume resume, SK searchKey) {
+        storage.replace(resume.getUuid(), resume);
     }
 
     @Override

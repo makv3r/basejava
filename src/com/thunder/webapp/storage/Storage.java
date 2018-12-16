@@ -10,9 +10,9 @@ public interface Storage {
 
     void clear();
 
-    void save(Resume r);
+    void save(Resume resume);
 
-    void update(Resume r);
+    void update(Resume resume);
 
     void delete(String uuid);
 

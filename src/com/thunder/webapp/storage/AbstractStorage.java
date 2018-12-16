@@ -13,42 +13,42 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    protected abstract SK getKey(String uuid);
+    protected abstract SK getSearchKey(String uuid);
 
-    protected abstract void doSave(Resume r, SK key);
+    protected abstract void doSave(Resume resume, SK searchKey);
 
-    protected abstract void doUpdate(Resume r, SK key);
+    protected abstract void doUpdate(Resume resume, SK searchKey);
 
-    protected abstract Resume doGet(SK key);
+    protected abstract Resume doGet(SK searchKey);
 
-    protected abstract void doDelete(SK key);
+    protected abstract void doDelete(SK searchKey);
 
-    protected abstract boolean checkKey(SK key);
+    protected abstract boolean checkSearchKey(SK searchKey);
 
     protected abstract List<Resume> getAll();
 
-    public void save(Resume r) {
-        LOG.info("Save " + r);
-        SK key = getNotExistKey(r.getUuid());
-        doSave(r, key);
+    public void save(Resume resume) {
+        LOG.info("Save " + resume);
+        SK searchKey = getNotExistSearchKey(resume.getUuid());
+        doSave(resume, searchKey);
     }
 
-    public void update(Resume r) {
-        LOG.info("Update " + r);
-        SK key = getExistKey(r.getUuid());
-        doUpdate(r, key);
+    public void update(Resume resume) {
+        LOG.info("Update " + resume);
+        SK searchKey = getExistSearchKey(resume.getUuid());
+        doUpdate(resume, searchKey);
     }
 
     public void delete(String uuid) {
         LOG.info("Delete " + uuid);
-        SK key = getExistKey(uuid);
-        doDelete(key);
+        SK searchKey = getExistSearchKey(uuid);
+        doDelete(searchKey);
     }
 
     public Resume get(String uuid) {
         LOG.info("Get " + uuid);
-        SK key = getExistKey(uuid);
-        return doGet(key);
+        SK searchKey = getExistSearchKey(uuid);
+        return doGet(searchKey);
     }
 
     public List<Resume> getAllSorted() {
@@ -58,21 +58,21 @@ public abstract class AbstractStorage<SK> implements Storage {
         return list;
     }
 
-    private SK getExistKey(String uuid) {
-        SK key = getKey(uuid);
-        if (!checkKey(key)) {
+    private SK getExistSearchKey(String uuid) {
+        SK searchKey = getSearchKey(uuid);
+        if (!checkSearchKey(searchKey)) {
             LOG.warning("Resume " + uuid + " not exist");
             throw new NotExistStorageException(uuid);
         }
-        return key;
+        return searchKey;
     }
 
-    private SK getNotExistKey(String uuid) {
-        SK key = getKey(uuid);
-        if (checkKey(key)) {
+    private SK getNotExistSearchKey(String uuid) {
+        SK searchKey = getSearchKey(uuid);
+        if (checkSearchKey(searchKey)) {
             LOG.warning("Resume " + uuid + " already exist");
             throw new ExistStorageException(uuid);
         }
-        return key;
+        return searchKey;
     }
 }

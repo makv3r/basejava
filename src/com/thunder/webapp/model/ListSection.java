@@ -4,14 +4,14 @@ package com.thunder.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class SectionListText extends SectionData {
-    private final List<String> list;
+public class ListSection<T> extends AbstractSection {
+    private final List<T> list;
 
-    public SectionListText(List<String> list) {
+    public ListSection(List<T> list) {
         this.list = list;
     }
 
-    public List<String> getList() {
+    public List<T> getList() {
         return list;
     }
 
@@ -19,7 +19,7 @@ public class SectionListText extends SectionData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SectionListText that = (SectionListText) o;
+        ListSection that = (ListSection) o;
         return list.equals(that.list);
     }
 
@@ -30,7 +30,7 @@ public class SectionListText extends SectionData {
 
     @Override
     public String toString() {
-        return "SectionListText{" +
+        return "ListSection{" +
                 "list=" + list +
                 '}';
     }

@@ -22,23 +22,23 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void doSave(Resume r, Integer index) {
-        storage.add(r);
+    protected void doSave(Resume resume, Integer searchKey) {
+        storage.add(resume);
     }
 
     @Override
-    public void doUpdate(Resume r, Integer key) {
-        storage.set(key, r);
+    public void doUpdate(Resume resume, Integer searchKey) {
+        storage.set(searchKey, resume);
     }
 
     @Override
-    public void doDelete(Integer key) {
-        storage.remove(key.intValue());
+    public void doDelete(Integer searchKey) {
+        storage.remove(searchKey.intValue());
     }
 
     @Override
-    public Resume doGet(Integer key) {
-        return storage.get(key);
+    public Resume doGet(Integer searchKey) {
+        return storage.get(searchKey);
     }
 
     @Override
@@ -46,10 +46,10 @@ public class ListStorage extends AbstractStorage<Integer> {
         return new ArrayList<>(storage);
     }
 
-    protected Integer getKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         int index = 0;
-        for (Resume tmp : storage) {
-            if (tmp.getUuid().equals(uuid)) {
+        for (Resume resume : storage) {
+            if (resume.getUuid().equals(uuid)) {
                 return index;
             }
             index++;
@@ -57,7 +57,7 @@ public class ListStorage extends AbstractStorage<Integer> {
         return -1;
     }
 
-    protected boolean checkKey(Integer key) {
-        return key >= 0;
+    protected boolean checkSearchKey(Integer searchKey) {
+        return searchKey >= 0;
     }
 }

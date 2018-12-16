@@ -4,14 +4,14 @@ package com.thunder.webapp.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Content {
+public class Item {
     private final Link link;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String title;
     private final String description;
 
-    public Content(Link link, LocalDate startDate, LocalDate endDate, String title, String description) {
+    public Item(Link link, LocalDate startDate, LocalDate endDate, String title, String description) {
         Objects.requireNonNull(link, "link must not be null");
         Objects.requireNonNull(startDate, "startDate must not be null");
         Objects.requireNonNull(endDate, "endDate must not be null");
@@ -47,7 +47,7 @@ public class Content {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Content content = (Content) o;
+        Item content = (Item) o;
         return link.equals(content.link) &&
                 startDate.equals(content.startDate) &&
                 endDate.equals(content.endDate) &&
@@ -62,7 +62,7 @@ public class Content {
 
     @Override
     public String toString() {
-        return "Content{" +
+        return "Item{" +
                 "link=" + link +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +

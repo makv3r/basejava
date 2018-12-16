@@ -21,18 +21,18 @@ public class MainCollections {
         collection.add(RESUME_2);
         collection.add(RESUME_3);
 
-        for (Resume r : collection) {
-            System.out.println(r);
-            if (Objects.equals(r.getUuid(), UUID_1)) {
+        for (Resume resume : collection) {
+            System.out.println(resume);
+            if (Objects.equals(resume.getUuid(), UUID_1)) {
                 //collection.remove(r);
             }
         }
 
         Iterator<Resume> iterator = collection.iterator();
         while (iterator.hasNext()) {
-            Resume r = iterator.next();
-            System.out.println(r);
-            if (Objects.equals(r.getUuid(), UUID_1)) {
+            Resume resume = iterator.next();
+            System.out.println(resume);
+            if (Objects.equals(resume.getUuid(), UUID_1)) {
                 iterator.remove();
             }
         }
