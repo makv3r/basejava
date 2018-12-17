@@ -4,15 +4,16 @@ package com.thunder.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection<T> extends AbstractSection {
-    private final List<T> list;
+public class ListSection extends AbstractSection {
+    private final List<String> items;
 
-    public ListSection(List<T> list) {
-        this.list = list;
+    public ListSection(List<String> items) {
+        Objects.requireNonNull(items, "items must not be null");
+        this.items = items;
     }
 
-    public List<T> getList() {
-        return list;
+    public List<String> getList() {
+        return items;
     }
 
     @Override
@@ -20,18 +21,18 @@ public class ListSection<T> extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ListSection that = (ListSection) o;
-        return list.equals(that.list);
+        return items.equals(that.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(list);
+        return Objects.hash(items);
     }
 
     @Override
     public String toString() {
         return "ListSection{" +
-                "list=" + list +
+                "list=" + items +
                 '}';
     }
 }
