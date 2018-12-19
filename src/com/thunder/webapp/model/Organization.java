@@ -1,73 +1,52 @@
 package com.thunder.webapp.model;
 
 
-import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class Organization {
     private final Link link;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String title;
-    private final String description;
+    private final List<Activity> activities;
 
-    public Organization(Link link, LocalDate startDate, LocalDate endDate, String title, String description) {
+    public Organization(Link link, Activity... activities) {
+        this(link, Arrays.asList(activities));
+    }
+
+    public Organization(Link link, List<Activity> activities) {
         Objects.requireNonNull(link, "link must not be null");
-        Objects.requireNonNull(startDate, "startDate must not be null");
-        Objects.requireNonNull(endDate, "endDate must not be null");
-        Objects.requireNonNull(title, "title must not be null");
+        Objects.requireNonNull(activities, "activities must not be null");
         this.link = link;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
+        this.activities = activities;
     }
 
     public Link getLink() {
         return link;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
+    public List<Activity> getActivities() {
+        return activities;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Organization content = (Organization) o;
-        return link.equals(content.link) &&
-                startDate.equals(content.startDate) &&
-                endDate.equals(content.endDate) &&
-                title.equals(content.title) &&
-                description.equals(content.description);
+        Organization that = (Organization) o;
+        return link.equals(that.link) &&
+                activities.equals(that.activities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(link, startDate, endDate, title, description);
+        return Objects.hash(link, activities);
     }
 
     @Override
     public String toString() {
         return "Organization{" +
                 "link=" + link +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title=" + title +
-                ", description=" + description +
+                ", activities=" + activities +
                 '}';
     }
 }

@@ -2,11 +2,12 @@ package com.thunder.webapp.storage;
 
 import com.thunder.webapp.exception.ExistStorageException;
 import com.thunder.webapp.exception.NotExistStorageException;
-import com.thunder.webapp.model.Resume;
+import com.thunder.webapp.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,10 +20,85 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
 
-    protected static final Resume RESUME_1 = new Resume(UUID_1, "Гарри Поттер");
-    protected static final Resume RESUME_2 = new Resume(UUID_2, "Гермиона Грейнджер");
-    protected static final Resume RESUME_3 = new Resume(UUID_3, "Рон Уизли");
-    protected static final Resume RESUME_4 = new Resume(UUID_4, "Северус Снейп");
+    private static final Resume RESUME_1 = new Resume(UUID_1, "Гарри Поттер");
+    private static final Resume RESUME_2 = new Resume(UUID_2, "Гермиона Грейнджер");
+    private static final Resume RESUME_3 = new Resume(UUID_3, "Рон Уизли");
+    private static final Resume RESUME_4 = new Resume(UUID_4, "Северус Снейп");
+
+    static {
+        RESUME_1.setContacts(ContactType.TEL, new Link("+123456789", ""));
+        RESUME_1.setContacts(ContactType.SKYPE, new Link("skype.name", "skype:skype.profile"));
+        RESUME_1.setContacts(ContactType.MAIL, new Link("mail@mail.com", "mailto:mail@mail.com"));
+        RESUME_1.setContacts(ContactType.PROFILE, new Link("Профиль 1", "https://google.com"));
+        RESUME_1.setContacts(ContactType.LINK, new Link("Домашняя страница", "https://google.com"));
+        RESUME_1.setSections(SectionType.OBJECTIVE, new TextSection("Objective description"));
+        RESUME_1.setSections(SectionType.PERSONAL, new TextSection("Personal description"));
+        RESUME_1.setSections(SectionType.ACHIEVEMENTS, new ListSection("Achievement 1", "Achievement 2"));
+        RESUME_1.setSections(SectionType.QUALIFICATIONS, new ListSection("Qualification 1", "Qualification 2"));
+        RESUME_1.setSections(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2018, 1, 1), LocalDate.now(),"Activity", "Description")),
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1), "Activity", "Description"))
+        ));
+        RESUME_1.setSections(SectionType.EDUCATION, new OrganizationSection(
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2013, 3, 1),LocalDate.of(2013, 5, 1), "Activity","")),
+                new Organization(new Link("Name", "http://google.com"), new Activity(LocalDate.of(2011, 3, 1),LocalDate.of(2011, 4, 1), "Activity",""))
+        ));
+
+        RESUME_2.setContacts(ContactType.TEL, new Link("+123456789", ""));
+        RESUME_2.setContacts(ContactType.SKYPE, new Link("skype.name", "skype:skype.profile"));
+        RESUME_2.setContacts(ContactType.MAIL, new Link("mail@mail.com", "mailto:mail@mail.com"));
+        RESUME_2.setContacts(ContactType.PROFILE, new Link("Профиль 1", "https://google.com"));
+        RESUME_2.setContacts(ContactType.LINK, new Link("Домашняя страница", "https://google.com"));
+        RESUME_2.setSections(SectionType.OBJECTIVE, new TextSection("Objective description"));
+        RESUME_2.setSections(SectionType.PERSONAL, new TextSection("Personal description"));
+        RESUME_2.setSections(SectionType.ACHIEVEMENTS, new ListSection("Achievement 1", "Achievement 2"));
+        RESUME_2.setSections(SectionType.QUALIFICATIONS, new ListSection("Qualification 1", "Qualification 2"));
+        RESUME_2.setSections(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2018, 1, 1), LocalDate.now(),"Activity", "Description")),
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1), "Activity", "Description"))
+        ));
+        RESUME_2.setSections(SectionType.EDUCATION, new OrganizationSection(
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2013, 3, 1),LocalDate.of(2013, 5, 1), "Activity","")),
+                new Organization(new Link("Name", "http://google.com"), new Activity(LocalDate.of(2011, 3, 1),LocalDate.of(2011, 4, 1), "Activity",""))
+        ));
+
+        RESUME_3.setContacts(ContactType.TEL, new Link("+123456789", ""));
+        RESUME_3.setContacts(ContactType.SKYPE, new Link("skype.name", "skype:skype.profile"));
+        RESUME_3.setContacts(ContactType.MAIL, new Link("mail@mail.com", "mailto:mail@mail.com"));
+        RESUME_3.setContacts(ContactType.PROFILE, new Link("Профиль 1", "https://google.com"));
+        RESUME_3.setContacts(ContactType.LINK, new Link("Домашняя страница", "https://google.com"));
+        RESUME_3.setSections(SectionType.OBJECTIVE, new TextSection("Objective description"));
+        RESUME_3.setSections(SectionType.PERSONAL, new TextSection("Personal description"));
+        RESUME_3.setSections(SectionType.ACHIEVEMENTS, new ListSection("Achievement 1", "Achievement 2"));
+        RESUME_3.setSections(SectionType.QUALIFICATIONS, new ListSection("Qualification 1", "Qualification 2"));
+        RESUME_3.setSections(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2018, 1, 1), LocalDate.now(),"Activity", "Description")),
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1), "Activity", "Description"))
+        ));
+        RESUME_3.setSections(SectionType.EDUCATION, new OrganizationSection(
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2013, 3, 1),LocalDate.of(2013, 5, 1), "Activity","")),
+                new Organization(new Link("Name", "http://google.com"), new Activity(LocalDate.of(2011, 3, 1),LocalDate.of(2011, 4, 1), "Activity",""))
+        ));
+
+        RESUME_4.setContacts(ContactType.TEL, new Link("+123456789", ""));
+        RESUME_4.setContacts(ContactType.SKYPE, new Link("skype.name", "skype:skype.profile"));
+        RESUME_4.setContacts(ContactType.MAIL, new Link("mail@mail.com", "mailto:mail@mail.com"));
+        RESUME_4.setContacts(ContactType.PROFILE, new Link("Профиль 1", "https://google.com"));
+        RESUME_4.setContacts(ContactType.LINK, new Link("Домашняя страница", "https://google.com"));
+        RESUME_4.setSections(SectionType.OBJECTIVE, new TextSection("Objective description"));
+        RESUME_4.setSections(SectionType.PERSONAL, new TextSection("Personal description"));
+        RESUME_4.setSections(SectionType.ACHIEVEMENTS, new ListSection("Achievement 1", "Achievement 2"));
+        RESUME_4.setSections(SectionType.QUALIFICATIONS, new ListSection("Qualification 1", "Qualification 2"));
+        RESUME_4.setSections(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2018, 1, 1), LocalDate.now(),"Activity", "Description")),
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1), "Activity", "Description"))
+        ));
+        RESUME_4.setSections(SectionType.EDUCATION, new OrganizationSection(
+                new Organization(new Link("Name", "https://google.com"),new Activity(LocalDate.of(2013, 3, 1),LocalDate.of(2013, 5, 1), "Activity","")),
+                new Organization(new Link("Name", "http://google.com"), new Activity(LocalDate.of(2011, 3, 1),LocalDate.of(2011, 4, 1), "Activity",""))
+        ));
+
+    }
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
