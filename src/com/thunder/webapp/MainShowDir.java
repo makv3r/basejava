@@ -20,7 +20,7 @@ public class MainShowDir {
         if (filesArray != null) {
             for (File file : filesArray) {
                 for (int i = 0; i < level; i++) {
-                    System.out.print("\t");
+                    System.out.print(".");
                 }
                 if (file.isDirectory()) {
                     System.out.println("[" + file.getName() + "]");

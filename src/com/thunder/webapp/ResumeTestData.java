@@ -9,6 +9,12 @@ public class ResumeTestData {
     public static void main(String[] args) {
         Resume resume = new Resume("Григорий Кислин");
 
+        fillResume(resume);
+
+        System.out.println(resume);
+    }
+
+    public static void fillResume(Resume resume) {
         resume.setContacts(ContactType.TEL, new Link("+7(921) 855-0482", ""));
         resume.setContacts(ContactType.SKYPE, new Link("grigory.kislin", "skype:grigory.kislin"));
         resume.setContacts(ContactType.MAIL, new Link("gkislin@yandex.ru", "mailto:gkislin@yandex.ru"));
@@ -172,8 +178,5 @@ public class ResumeTestData {
                                 ""
                         ))
         ));
-
-
-        System.out.println(resume);
     }
 }
