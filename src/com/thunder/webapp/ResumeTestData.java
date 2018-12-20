@@ -7,14 +7,14 @@ import java.time.LocalDate;
 
 public class ResumeTestData {
     public static void main(String[] args) {
-        Resume resume = new Resume("Григорий Кислин");
-
-        fillResume(resume);
+        Resume resume = ResumeTestData.fillResume("uuid1","Григорий Кислин");
 
         System.out.println(resume);
     }
 
-    public static void fillResume(Resume resume) {
+    public static Resume fillResume(String uuid, String name) {
+        Resume resume  = new Resume(uuid, name);
+
         resume.setContacts(ContactType.TEL, new Link("+7(921) 855-0482", ""));
         resume.setContacts(ContactType.SKYPE, new Link("grigory.kislin", "skype:grigory.kislin"));
         resume.setContacts(ContactType.MAIL, new Link("gkislin@yandex.ru", "mailto:gkislin@yandex.ru"));
@@ -178,5 +178,7 @@ public class ResumeTestData {
                                 ""
                         ))
         ));
+
+        return resume;
     }
 }
