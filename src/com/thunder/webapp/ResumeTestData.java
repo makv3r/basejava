@@ -58,7 +58,7 @@ public class ResumeTestData {
         resume.setSections(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization(
                         new Link("Coursera", "https://www.coursera.org/course/progfun"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2013, 10, 1),
                                 LocalDate.now(),
                                 "Автор проекта.",
@@ -66,7 +66,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Wrike", "https://www.wrike.com/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2014, 10, 1),
                                 LocalDate.of(2016, 1, 1),
                                 "Старший разработчик (backend)",
@@ -74,7 +74,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("RIT Center", ""),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2012, 4, 1),
                                 LocalDate.of(2014, 10, 1),
                                 "Java архитектор",
@@ -82,7 +82,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Luxoft (Deutsche Bank)", "http://www.luxoft.ru/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2010, 12, 1),
                                 LocalDate.of(2012, 4, 1),
                                 "Ведущий программист",
@@ -90,7 +90,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Yota", "https://www.yota.ru/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2008, 6, 1),
                                 LocalDate.of(2010, 12, 1),
                                 "Ведущий специалист",
@@ -98,7 +98,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Enkata", "http://enkata.com/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2007, 3, 1),
                                 LocalDate.of(2008, 6, 1),
                                 "Разработчик ПО",
@@ -106,7 +106,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Siemens AG", "https://www.siemens.com/ru/ru/home.html"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2005, 1, 1),
                                 LocalDate.of(2007, 2, 1),
                                 "Разработчик ПО",
@@ -114,7 +114,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Alcatel", "http://www.alcatel.ru/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(1997, 9, 1),
                                 LocalDate.of(2005, 1, 1),
                                 "Инженер по аппаратному и программному тестированию",
@@ -125,7 +125,7 @@ public class ResumeTestData {
         resume.setSections(SectionType.EDUCATION, new OrganizationSection(
                 new Organization(
                         new Link("Coursera", "https://www.coursera.org/course/progfun"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2013, 3, 1),
                                 LocalDate.of(2013, 5, 1),
                                 "\"Functional Programming Principles in Scala\" by Martin Odersky",
@@ -133,7 +133,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2011, 3, 1),
                                 LocalDate.of(2011, 4, 1),
                                 "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"",
@@ -141,7 +141,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Siemens AG", "http://www.siemens.ru/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(2005, 1, 1),
                                 LocalDate.of(2005, 4, 1),
                                 "3 месяца обучения мобильным IN сетям (Берлин)",
@@ -149,7 +149,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Alcatel", "http://www.alcatel.ru/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(1997, 9, 1),
                                 LocalDate.of(1998, 3, 1),
                                 "6 месяцев обучения цифровым телефонным сетям (Москва)",
@@ -157,13 +157,13 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(1993, 9, 1),
                                 LocalDate.of(1996, 7, 1),
                                 "Аспирантура (программист С, С++)",
                                 ""
                         ),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(1987, 9, 1),
                                 LocalDate.of(1993, 7, 1),
                                 "Инженер (программист Fortran, C)",
@@ -171,7 +171,7 @@ public class ResumeTestData {
                         )),
                 new Organization(
                         new Link("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/"),
-                        new Activity(
+                        new Organization.Activity(
                                 LocalDate.of(1984, 9, 1),
                                 LocalDate.of(1987, 6, 1),
                                 "Закончил с отличием",
