@@ -1,4 +1,4 @@
-package com.thunder.webapp.storage;
+package com.thunder.webapp.storage.serializer;
 
 import com.thunder.webapp.model.Resume;
 import java.io.IOException;

@@ -2,6 +2,7 @@ package com.thunder.webapp.storage;
 
 import com.thunder.webapp.exception.StorageException;
 import com.thunder.webapp.model.Resume;
+import com.thunder.webapp.storage.serializer.Strategy;
 
 import java.io.*;
 import java.util.ArrayList;

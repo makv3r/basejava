@@ -29,5 +29,8 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        System.out.println();
+        MainShowDir.showDir(dir,"");
     }
 }
