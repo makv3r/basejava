@@ -2,7 +2,7 @@ package com.thunder.webapp.storage;
 
 import com.thunder.webapp.exception.StorageException;
 import com.thunder.webapp.model.Resume;
-import com.thunder.webapp.storage.serializer.Strategy;
+import com.thunder.webapp.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,18 +13,18 @@ import java.util.List;
 import java.util.Objects;
 
 public class PathStorage extends AbstractStorage<Path> {
-    private Strategy strategy;
+    private StreamSerializer streamSerializer;
     private Path directory;
 
 
-    public PathStorage(String dir, Strategy strategy) {
+    public PathStorage(String dir, StreamSerializer streamSerializer) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "Directory must mot be null");
-        Objects.requireNonNull(strategy, "Strategy must mot be null");
+        Objects.requireNonNull(streamSerializer, "StreamSerializer must mot be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory) || !Files.isReadable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable/readable");
         }
-        this.strategy = strategy;
+        this.streamSerializer = streamSerializer;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            doWrite(resume, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", resume.getUuid(), e);
         }
@@ -67,7 +67,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
+            return doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path read error", path.getFileName().toString(), e);
         }
@@ -93,16 +93,16 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.list(directory).forEach(path -> list.add(doGet(path)));
         } catch (IOException e) {
-            throw new StorageException("No resumes in directory", null);
+            throw new StorageException("No resumes in directory", e);
         }
         return list;
     }
 
     private void doWrite(Resume resume, OutputStream os) throws IOException {
-        strategy.doWrite(resume, os);
+        streamSerializer.doWrite(resume, os);
     }
 
     private Resume doRead(InputStream is) throws IOException {
-        return strategy.doRead(is);
+        return streamSerializer.doRead(is);
     }
 }

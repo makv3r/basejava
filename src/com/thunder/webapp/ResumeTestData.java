@@ -15,18 +15,17 @@ public class ResumeTestData {
     public static Resume fillResume(String uuid, String name) {
         Resume resume  = new Resume(uuid, name);
 
-        resume.setContacts(ContactType.TEL, new Link("+7(921) 855-0482", ""));
-        resume.setContacts(ContactType.SKYPE, new Link("grigory.kislin", "skype:grigory.kislin"));
-        resume.setContacts(ContactType.MAIL, new Link("gkislin@yandex.ru", "mailto:gkislin@yandex.ru"));
-        resume.setContacts(ContactType.PROFILE, new Link("Профиль LinkedIn", "https://www.linkedin.com/in/gkislin"));
-        resume.setContacts(ContactType.PROFILE, new Link("Профиль GitHub", "https://github.com/gkislin"));
-        resume.setContacts(ContactType.PROFILE, new Link("Профиль Stackoverflow", "https://stackoverflow.com/users/548473"));
-        resume.setContacts(ContactType.LINK, new Link("Домашняя страница", "http://gkislin.ru/"));
+        resume.addContact(ContactType.TEL,"+7(921) 855-0482");
+        resume.addContact(ContactType.SKYPE,"grigory.kislin");
+        resume.addContact(ContactType.MAIL,"gkislin@yandex.ru");
+        resume.addContact(ContactType.PROFILE,"https://www.linkedin.com/in/gkislin");
+        resume.addContact(ContactType.PROFILE,"https://github.com/gkislin");
+        resume.addContact(ContactType.PROFILE,"https://stackoverflow.com/users/548473");
+        resume.addContact(ContactType.LINK,"http://gkislin.ru/");
 
-        resume.setSections(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям."));
-        resume.setSections(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
-
-        resume.setSections(SectionType.ACHIEVEMENTS, new ListSection(
+        resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям."));
+        resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        resume.addSection(SectionType.ACHIEVEMENTS, new ListSection(
                 "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
                 "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.",
@@ -35,7 +34,7 @@ public class ResumeTestData {
                 "Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."
         ));
 
-        resume.setSections(SectionType.QUALIFICATIONS, new ListSection(
+        resume.addSection(SectionType.QUALIFICATIONS, new ListSection(
                 "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle,",
@@ -55,7 +54,7 @@ public class ResumeTestData {
                 "Родной русский, английский \"upper intermediate\""
         ));
 
-        resume.setSections(SectionType.EXPERIENCE, new OrganizationSection(
+        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization(
                         new Link("Coursera", "https://www.coursera.org/course/progfun"),
                         new Organization.Activity(
@@ -122,7 +121,7 @@ public class ResumeTestData {
                         ))
         ));
 
-        resume.setSections(SectionType.EDUCATION, new OrganizationSection(
+        resume.addSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization(
                         new Link("Coursera", "https://www.coursera.org/course/progfun"),
                         new Organization.Activity(

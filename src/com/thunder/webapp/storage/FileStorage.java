@@ -2,7 +2,7 @@ package com.thunder.webapp.storage;
 
 import com.thunder.webapp.exception.StorageException;
 import com.thunder.webapp.model.Resume;
-import com.thunder.webapp.storage.serializer.Strategy;
+import com.thunder.webapp.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,13 +11,13 @@ import java.util.Objects;
 
 
 public class FileStorage extends AbstractStorage<File> {
-    private Strategy strategy;
+    private StreamSerializer streamSerializer;
     private File directory;
 
 
-    public FileStorage(File directory, Strategy strategy) {
+    public FileStorage(File directory, StreamSerializer streamSerializer) {
         Objects.requireNonNull(directory, "Directory must not be null");
-        Objects.requireNonNull(strategy, "Strategy must mot be null");
+        Objects.requireNonNull(streamSerializer, "StreamSerializer must mot be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -25,7 +25,7 @@ public class FileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
-        this.strategy = strategy;
+        this.streamSerializer = streamSerializer;
     }
 
     @Override
@@ -110,10 +110,10 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     private void doWrite(Resume resume, OutputStream os) throws IOException {
-        strategy.doWrite(resume, os);
+        streamSerializer.doWrite(resume, os);
     }
 
     private Resume doRead(InputStream is) throws IOException {
-        return strategy.doRead(is);
+        return streamSerializer.doRead(is);
     }
 }

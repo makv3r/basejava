@@ -5,7 +5,7 @@ import com.thunder.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage implements Strategy {
+public class ObjectStreamSerializer implements StreamSerializer {
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {

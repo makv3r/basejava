@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = new File("storage");
 
@@ -109,8 +108,8 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() throws Exception {
-        List<Resume> resumes1 = storage.getAllSorted();
-        List<Resume> resumes2 = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> resumes1 = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> resumes2 = storage.getAllSorted();
         assertEquals(resumes1.size(), resumes2.size());
         assertEquals(resumes1, resumes2);
     }
