@@ -5,38 +5,25 @@ public class MainDeadLock {
         String resource1 = "resource1";
         String resource2 = "resource2";
 
-        Thread thread1 = new Thread(() -> {
-            synchronized (resource1) {
-                System.out.println("Thread1: locked resource1");
+        deadLock(resource1, resource2);
+        deadLock(resource2, resource1);
+    }
 
+    private static void deadLock(Object lock1, Object lock2) {
+        new Thread(() -> {
+            System.out.println("Waiting " + lock1);
+            synchronized (lock1) {
+                System.out.println("Holding " + lock1);
                 try {
-                    Thread.sleep(1000);
-                } catch (Exception e) {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-
-                synchronized (resource2) {
-                    System.out.println("Thread1: locked resource2");
+                System.out.println("Waiting " + lock2);
+                synchronized (lock2) {
+                    System.out.println("Holding " + lock2);
                 }
             }
-        });
-
-        Thread thread2 = new Thread(() -> {
-            synchronized (resource2) {
-                System.out.println("Thread2: locked resource2");
-
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e) {
-                }
-
-                synchronized (resource1) {
-                    System.out.println("Thread2: locked resource1");
-                }
-            }
-
-        });
-
-        thread1.start();
-        thread2.start();
+        }).start();
     }
 }

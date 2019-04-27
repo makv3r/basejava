@@ -1,12 +1,16 @@
 package com.thunder.webapp;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MainConcurrency {
     public static final int THREADS_NUMBER = 10000;
-    private int counter;
-    private static final Object LOCK = new Object();
+    private final AtomicInteger atomicCounter = new AtomicInteger();
+
+    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+    private  final ThreadLocal<SimpleDateFormat> threadLocal = ThreadLocal.withInitial(() -> new SimpleDateFormat("dd.MM.yyyy HH:mm:ss"));
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println(Thread.currentThread().getName());
@@ -15,13 +19,12 @@ public class MainConcurrency {
             @Override
             public void run() {
                 System.out.println(getName() + ", " + getState());
-                throw new IllegalStateException();
+                //throw new IllegalStateException();
             }
         };
         thread0.start();
 
         new Thread(new Runnable() {
-
             @Override
             public void run() {
                 System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
@@ -29,38 +32,36 @@ public class MainConcurrency {
 
             private void inc() {
                 synchronized (this) {
-                    //counter++;
+//                    counter++;
                 }
             }
-
         }).start();
 
         System.out.println(thread0.getState());
 
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        List<Thread> threads = new ArrayList<>(THREADS_NUMBER);
+        CountDownLatch latch = new CountDownLatch(THREADS_NUMBER);
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         for (int i = 0; i < THREADS_NUMBER; i++) {
-            Thread thread = new Thread(() -> {
+
+            Future<Integer> future = executorService.submit(() ->
+            {
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.inc();
+                    //System.out.println(threadLocal.get().format(new Date()));
                 }
+                latch.countDown();
+                return 5;
             });
-            thread.start();
-            threads.add(thread);
         }
 
-        threads.forEach(t -> {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        System.out.println(mainConcurrency.counter);
+        latch.await(10, TimeUnit.SECONDS);
+        executorService.shutdown();
+        System.out.println(mainConcurrency.atomicCounter.get());
     }
 
-    private synchronized void inc() {
-        counter++;
+    private void inc() {
+        atomicCounter.incrementAndGet();
     }
 }
