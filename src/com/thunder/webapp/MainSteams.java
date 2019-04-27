@@ -23,17 +23,15 @@ public class MainSteams {
     }
 
     public static List<Integer> oddOrEven1(List<Integer> integers) {
-        //long sum = integers.stream().mapToInt(Integer::intValue).sum();
-        long sum = integers.stream().reduce(0, (x, y) -> x + y);
-        return integers.stream().filter(x -> (x % 2) == (sum % 2)).collect(Collectors.toList());
+        //long value = integers.stream().mapToInt(Integer::intValue).sum();
+        long value = integers.stream().reduce(0, (x, y) -> x + y) % 2;
+        return integers.stream().filter(x -> (x % 2) == value).collect(Collectors.toList());
     }
 
     public static List<Integer> oddOrEven2(List<Integer> integers) {
         Map<Boolean, List<Integer>> map = integers.stream()
                 .collect(Collectors.partitioningBy(i -> i % 2 == 0));
-        return map.get(false).size() % 2 == 0 ?
-                map.get(true).stream().collect(Collectors.toList()) :
-                map.get(false).stream().collect(Collectors.toList());
+        return map.get(map.get(false).size() % 2 == 0).stream().collect(Collectors.toList());
     }
 
 }
