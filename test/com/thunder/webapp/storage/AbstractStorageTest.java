@@ -1,5 +1,6 @@
 package com.thunder.webapp.storage;
 
+import com.thunder.webapp.Config;
 import com.thunder.webapp.ResumeTestData;
 import com.thunder.webapp.exception.ExistStorageException;
 import com.thunder.webapp.exception.NotExistStorageException;
@@ -14,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("storage");
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
 
     protected Storage storage;
 
@@ -33,10 +34,17 @@ public abstract class AbstractStorageTest {
     }
 
     static {
+        RESUME_1 = new Resume(UUID_1, "Гарри Поттер");
+        RESUME_2 = new Resume(UUID_2, "Гермиона Грейнджер");
+        RESUME_3 = new Resume(UUID_3, "Рон Уизли");
+        RESUME_4 = new Resume(UUID_4, "Северус Снейп");
+
+/*
         RESUME_1 = ResumeTestData.fillResume(UUID_1, "Гарри Поттер");
         RESUME_2 = ResumeTestData.fillResume(UUID_2, "Гермиона Грейнджер");
         RESUME_3 = ResumeTestData.fillResume(UUID_3, "Рон Уизли");
         RESUME_4 = ResumeTestData.fillResume(UUID_4, "Северус Снейп");
+*/
     }
 
     @Before
