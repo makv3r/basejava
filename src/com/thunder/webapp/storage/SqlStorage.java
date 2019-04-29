@@ -17,10 +17,9 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-        return sqlHelper.executeSqlQueryWithReturn("SELECT COUNT(uuid) FROM resume", ps -> {
+        return sqlHelper.executeSqlQuery("SELECT COUNT(uuid) FROM resume", ps -> {
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            return rs.getInt(1);
+            return !rs.next() ? 0 : rs.getInt(1);
         });
     }
 
@@ -35,6 +34,7 @@ public class SqlStorage implements Storage {
             ps.setString(1, resume.getUuid());
             ps.setString(2, resume.getFullName());
             ps.execute();
+            return null;
         });
     }
 
@@ -44,6 +44,7 @@ public class SqlStorage implements Storage {
             ps.setString(1, resume.getFullName());
             ps.setString(2, resume.getUuid());
             executeAndCheckResponse(resume.getUuid(), ps);
+            return null;
         });
     }
 
@@ -52,12 +53,13 @@ public class SqlStorage implements Storage {
         sqlHelper.executeSqlQuery("DELETE FROM resume WHERE uuid = ?", ps -> {
             ps.setString(1, uuid);
             executeAndCheckResponse(uuid, ps);
+            return null;
         });
     }
 
     @Override
     public Resume get(String uuid) {
-        return sqlHelper.executeSqlQueryWithReturn("SELECT * FROM resume WHERE uuid = ?", ps -> {
+        return sqlHelper.executeSqlQuery("SELECT * FROM resume WHERE uuid = ?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -70,13 +72,13 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> result = new ArrayList<>();
-        sqlHelper.executeSqlQuery("SELECT * FROM resume ORDER BY full_name, uuid", ps -> {
+        return sqlHelper.executeSqlQuery("SELECT * FROM resume ORDER BY full_name, uuid", ps -> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 result.add(new Resume(rs.getString(1).trim(), rs.getString(2).trim()));
             }
+            return result;
         });
-        return result;
     }
 
     private void executeAndCheckResponse(String uuid, PreparedStatement ps) throws SQLException {
