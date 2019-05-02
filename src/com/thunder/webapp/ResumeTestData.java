@@ -15,14 +15,14 @@ public class ResumeTestData {
     public static Resume fillResume(String uuid, String name) {
         Resume resume  = new Resume(uuid, name);
 
-        resume.addContact(ContactType.TEL,"+7(921) 855-0482");
+        resume.addContact(ContactType.TEL,"+7(921) 855-0481");
         resume.addContact(ContactType.SKYPE,"grigory.kislin");
         resume.addContact(ContactType.MAIL,"gkislin@yandex.ru");
-        resume.addContact(ContactType.PROFILE,"https://www.linkedin.com/in/gkislin");
-        resume.addContact(ContactType.PROFILE,"https://github.com/gkislin");
-        resume.addContact(ContactType.PROFILE,"https://stackoverflow.com/users/548473");
+        resume.addContact(ContactType.GITHUB,"https://www.linkedin.com/in/gkislin");
+        resume.addContact(ContactType.LINKEDIN,"https://github.com/gkislin");
+        resume.addContact(ContactType.STACKOVERFLOW,"https://stackoverflow.com/users/548473");
         resume.addContact(ContactType.LINK,"http://gkislin.ru/");
-
+/*
         resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям."));
         resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         resume.addSection(SectionType.ACHIEVEMENTS, new ListSection(
@@ -177,7 +177,7 @@ public class ResumeTestData {
                                 ""
                         ))
         ));
-
+*/
         return resume;
     }
 }

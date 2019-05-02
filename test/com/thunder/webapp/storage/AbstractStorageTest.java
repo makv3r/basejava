@@ -34,17 +34,10 @@ public abstract class AbstractStorageTest {
     }
 
     static {
-        RESUME_1 = new Resume(UUID_1, "Гарри Поттер");
-        RESUME_2 = new Resume(UUID_2, "Гермиона Грейнджер");
-        RESUME_3 = new Resume(UUID_3, "Рон Уизли");
-        RESUME_4 = new Resume(UUID_4, "Северус Снейп");
-
-/*
         RESUME_1 = ResumeTestData.fillResume(UUID_1, "Гарри Поттер");
         RESUME_2 = ResumeTestData.fillResume(UUID_2, "Гермиона Грейнджер");
         RESUME_3 = ResumeTestData.fillResume(UUID_3, "Рон Уизли");
         RESUME_4 = ResumeTestData.fillResume(UUID_4, "Северус Снейп");
-*/
     }
 
     @Before
@@ -74,7 +67,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume resume = new Resume(UUID_1, "Северус Снейп");
+        Resume resume = ResumeTestData.fillResume(UUID_1, "Северус Снейп");
         storage.update(resume);
         assertEquals(resume, storage.get(UUID_1));
     }
