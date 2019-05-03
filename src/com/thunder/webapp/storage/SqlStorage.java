@@ -6,9 +6,7 @@ import com.thunder.webapp.model.Resume;
 import com.thunder.webapp.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
@@ -96,16 +94,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> result = new ArrayList<>();
-
-        sqlHelper.transactionalExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY full_name, uuid")) {
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    result.add(new Resume(rs.getString(1).trim(), rs.getString(2).trim()));
-                }
-            }
-
+        return sqlHelper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("" +
                     "SELECT uuid, full_name, type, value FROM resume r " +
                     "LEFT JOIN contact c " +
@@ -113,54 +102,24 @@ public class SqlStorage implements Storage {
                     "ORDER BY full_name, uuid "
             )) {
                 ResultSet rs = ps.executeQuery();
-                if (!rs.next()) {
-                    throw new NotExistStorageException("");
-                }
-                for (Resume resume : result) {
-                    do {
-                        if (!resume.getUuid().equals(rs.getString("uuid").trim())) break;
-                        resume.addContact(
-                                ContactType.valueOf(rs.getString("type")),
-                                rs.getString("value")
-                        );
-                    } while (rs.next());
-                }
-            }
-
-            return null;
-        });
-
-/**
- Верхний вариант выполняет работу в 2 запроса
- Нижний в N + 1 (где N количество resume)
- */
-
-/*
-        sqlHelper.transactionalExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY full_name, uuid")) {
-                ResultSet rs = ps.executeQuery();
+                Map<String, Resume> map = new LinkedHashMap<>();
                 while (rs.next()) {
-                    result.add(new Resume(rs.getString(1).trim(), rs.getString(2).trim()));
-                }
-            }
-
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact WHERE resume_uuid = ?")) {
-                for (Resume resume : result) {
-                    ps.setString(1, resume.getUuid());
-                    ResultSet rs = ps.executeQuery();
-                    while (rs.next()) {
+                    String uuid = rs.getString(1).trim();
+                    Resume resume = map.get(uuid);
+                    if (resume == null) {
+                        resume = new Resume(uuid, rs.getString("full_name"));
+                    }
+                    if (rs.getString("value") != null) {
                         resume.addContact(
                                 ContactType.valueOf(rs.getString("type")),
                                 rs.getString("value")
                         );
                     }
+                    map.put(uuid, resume);
                 }
+                return new ArrayList<>(map.values());
             }
-
-            return null;
         });
-*/
-        return result;
     }
 
     private void executeAndCheckResponse(String uuid, PreparedStatement ps) throws SQLException {
