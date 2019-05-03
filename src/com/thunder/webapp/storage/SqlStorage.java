@@ -82,10 +82,7 @@ public class SqlStorage implements Storage {
                     }
                     Resume resume = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        resume.addContact(
-                                ContactType.valueOf(rs.getString("type")),
-                                rs.getString("value")
-                        );
+                        addContact(resume, rs);
                     } while (rs.next());
 
                     return resume;
@@ -94,32 +91,22 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.transactionalExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("" +
-                    "SELECT uuid, full_name, type, value FROM resume r " +
-                    "LEFT JOIN contact c " +
-                    "ON r.uuid = c.resume_uuid " +
-                    "ORDER BY full_name, uuid "
-            )) {
-                ResultSet rs = ps.executeQuery();
-                Map<String, Resume> map = new LinkedHashMap<>();
-                while (rs.next()) {
-                    String uuid = rs.getString(1).trim();
-                    Resume resume = map.get(uuid);
-                    if (resume == null) {
-                        resume = new Resume(uuid, rs.getString("full_name"));
+        return sqlHelper.execute("" +
+                        "SELECT uuid, full_name, type, value FROM resume r " +
+                        "LEFT JOIN contact c " +
+                        "ON r.uuid = c.resume_uuid " +
+                        "ORDER BY full_name, uuid ",
+                ps -> {
+                    ResultSet rs = ps.executeQuery();
+                    Map<String, Resume> map = new LinkedHashMap<>();
+                    while (rs.next()) {
+                        String uuid = rs.getString(1).trim();
+                        String full_name = rs.getString(2);
+                        Resume resume = map.computeIfAbsent(uuid, k -> new Resume(k, full_name));
+                        addContact(resume, rs);
                     }
-                    if (rs.getString("value") != null) {
-                        resume.addContact(
-                                ContactType.valueOf(rs.getString("type")),
-                                rs.getString("value")
-                        );
-                    }
-                    map.put(uuid, resume);
-                }
-                return new ArrayList<>(map.values());
-            }
-        });
+                    return new ArrayList<>(map.values());
+                });
     }
 
     private void executeAndCheckResponse(String uuid, PreparedStatement ps) throws SQLException {
@@ -140,4 +127,12 @@ public class SqlStorage implements Storage {
         }
     }
 
+    private void addContact(Resume resume, ResultSet rs) throws SQLException {
+        if (rs.getString("value") != null) {
+            resume.addContact(
+                    ContactType.valueOf(rs.getString("type")),
+                    rs.getString("value")
+            );
+        }
+    }
 }
