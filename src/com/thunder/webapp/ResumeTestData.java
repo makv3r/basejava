@@ -22,7 +22,7 @@ public class ResumeTestData {
         resume.addContact(ContactType.LINKEDIN,"https://github.com/gkislin");
         resume.addContact(ContactType.STACKOVERFLOW,"https://stackoverflow.com/users/548473");
         resume.addContact(ContactType.LINK,"http://gkislin.ru/");
-/*
+
         resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям."));
         resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         resume.addSection(SectionType.ACHIEVEMENTS, new ListSection(
@@ -53,7 +53,7 @@ public class ResumeTestData {
                 "программирования",
                 "Родной русский, английский \"upper intermediate\""
         ));
-
+/*
         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization(
                         new Link("Coursera", "https://www.coursera.org/course/progfun"),
