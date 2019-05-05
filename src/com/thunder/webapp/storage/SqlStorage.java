@@ -91,12 +91,9 @@ public class SqlStorage implements Storage {
                     "    SELECT type, value FROM section WHERE resume_uuid = ?")) {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
-                if (!rs.next()) {
-                    throw new NotExistStorageException(uuid);
-                }
-                do {
+                while (rs.next()) {
                     addSection(resume, rs);
-                } while (rs.next());
+                }
             }
 
             return resume;
@@ -189,7 +186,7 @@ public class SqlStorage implements Storage {
                     case ACHIEVEMENTS:
                     case QUALIFICATIONS:
                         ps.setString(3,
-                                listToString(((ListSection) entry.getValue()).getList()));
+                                String.join("\n", ((ListSection) entry.getValue()).getList()));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -228,13 +225,5 @@ public class SqlStorage implements Storage {
             ps.setString(1, uuid);
             ps.execute();
         }
-    }
-
-    private String listToString(List<String> list) {
-        StringBuilder sb = new StringBuilder();
-        for (String line : list) {
-            sb.append(line + "\n");
-        }
-        return sb.toString();
     }
 }
