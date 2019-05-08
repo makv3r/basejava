@@ -57,10 +57,15 @@ public class Organization implements Serializable {
 
     @Override
     public String toString() {
-        return "Organization{" +
-                "link=" + link +
-                ", activities=" + activities +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(link.getName());
+        String url = link.getUrl();
+        if (url != null) sb.append("\turl: ").append(url);
+        for (Activity activity : activities) {
+            sb.append(activity);
+        }
+        sb.append(System.lineSeparator());
+        return sb.toString();
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -120,12 +125,22 @@ public class Organization implements Serializable {
 
         @Override
         public String toString() {
-            return "Activity{" +
-                    "startDate=" + startDate +
-                    ", endDate=" + endDate +
-                    ", title='" + title + '\'' +
-                    ", description='" + description + '\'' +
-                    '}';
+            StringBuilder sb = new StringBuilder();
+            int startMonth = startDate.getMonthValue();
+            int endMonth = endDate.getMonthValue();
+            sb.append(System.lineSeparator()).
+                    append(startMonth < 10 ? "0" + startMonth : startMonth).
+                    append("/").
+                    append(startDate.getYear()).
+                    append("-").
+                    append(endMonth < 10 ? "0" + endMonth : endMonth).
+                    append("/").
+                    append(endDate.getYear()).
+                    append(" ").
+                    append(title).
+                    append(System.lineSeparator());
+            if (description != null) sb.append(description);
+            return sb.toString();
         }
     }
 }

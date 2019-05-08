@@ -25,13 +25,12 @@ public class Config {
             Properties properties = new Properties();
             properties.load(is);
             storageDir = new File(properties.getProperty("storage.dir"));
-            Class.forName("org.postgresql.Driver");
             storage = new SqlStorage(
                     properties.getProperty("db.url"),
                     properties.getProperty("db.user"),
                     properties.getProperty("db.password")
             );
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPERTIES.getAbsolutePath());
         }
     }

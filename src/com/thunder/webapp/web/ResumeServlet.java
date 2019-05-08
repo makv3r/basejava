@@ -1,6 +1,7 @@
 package com.thunder.webapp.web;
 
 import com.thunder.webapp.Config;
+import com.thunder.webapp.ResumeTestData;
 import com.thunder.webapp.model.*;
 import com.thunder.webapp.storage.Storage;
 
@@ -10,92 +11,122 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 
 public class ResumeServlet extends HttpServlet {
-    private Storage storage = Config.getInstance().getStorage();
+    private Storage storage;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        storage = Config.getInstance().getStorage();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
 
+        Resume resume;
+        boolean isNewResume = uuid.isEmpty();
+        if (isNewResume) {
+            resume = new Resume(fullName);
+        } else {
+            resume = storage.get(uuid);
+            resume.setFullName(fullName);
+        }
+
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                resume.addContact(type, value);
+            } else {
+                resume.getContacts().remove(type);
+            }
+        }
+
+        for (SectionType sectionType : SectionType.values()) {
+            String value = request.getParameter(sectionType.name());
+            String[] values = request.getParameterValues(sectionType.name());
+            if (value == null || value.trim().length() == 0 && values.length < 2) {
+                resume.getSections().remove(sectionType);
+            } else {
+                switch (sectionType) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        resume.addSection(sectionType, new TextSection(request.getParameter(sectionType.name())));
+                        break;
+                    case ACHIEVEMENTS:
+                    case QUALIFICATIONS:
+                        resume.addSection(sectionType, new ListSection(value.split("\r\n")));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        break;
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            }
+        }
+
+        if (isNewResume) {
+            storage.save(resume);
+        } else {
+            storage.update(resume);
+        }
+
+        response.sendRedirect("resume");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-
-        //String name = request.getParameter("name");
-        //response.getWriter().write(name == null ? "Hello Resumes!" : "Hello " + name + "!");
-
-        PrintWriter out = response.getWriter();
-        try {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-            out.println("<link rel=\"stylesheet\" href=\"css/style.css\">");
-            out.println("<title>Resumes Table</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h3>Resumes Table</h3>");
-
-            List<Resume> list = storage.getAllSorted();
-            for (Resume resume : list) {
-                Map<ContactType, String> contacts = resume.getContacts();
-                Map<SectionType, AbstractSection> sections = resume.getSections();
-
-                out.println("<section><table class=\"MainTable\">");
-
-                out.println("<thead><tr>");
-                out.println("<th>" + resume.getUuid() + "</th>");
-                out.println("<th>" + resume.getFullName() + "</th>");
-                out.println("</tr></thead><tbody>");
-
-                for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                    out.println("<tr>");
-                    out.println("<td>" + entry.getKey().getTitle() + "</td>");
-                    out.println("<td>" + entry.getValue() + "</td>");
-                    out.println("</tr>");
-                }
-
-                for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
-                    out.println("<tr>");
-                    out.println("<td>" + entry.getKey().getTitle() + "</td>");
-                    out.println("<td>");
-                    SectionType sectionType = SectionType.valueOf(entry.getKey().toString());
-                    switch (sectionType) {
-                        case PERSONAL:
-                        case OBJECTIVE:
-                            out.println(entry.getValue().toString());
-                            break;
-                        case ACHIEVEMENTS:
-                        case QUALIFICATIONS:
-                            List<String> items = (((ListSection) entry.getValue()).getList());
-                            out.println("<ul>");
-                            for (String line : items) {
-                                out.println("<li>" + line + "</li>");
-                            }
-                            out.println("</ul>");
-                            break;
-                        case EXPERIENCE:
-                        case EDUCATION:
-                            break;
-                    }
-                    out.println("</td>");
-                    out.println("</tr>");
-                }
-
-
-                out.println("<tbody></table></section><br><br><br>");
-            }
-            out.println("</body>");
-            out.println("</html>");
-        } catch (Exception e) {
-            out.println(e.getMessage());
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
         }
+        Resume resume;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "create":
+                resume = new Resume();
+                break;
+            case "generate":
+                storage.save(ResumeTestData.fillResume(UUID.randomUUID().toString(), generateString()));
+                response.sendRedirect("resume");
+                return;
+            case "view":
+            case "edit":
+                resume = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
+    }
+
+    private String generateString() {
+        int leftLimit = 97;
+        int rightLimit = 122;
+        int targetStringLength = 10;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+        return buffer.toString();
     }
 }
 

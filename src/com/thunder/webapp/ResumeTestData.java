@@ -53,7 +53,6 @@ public class ResumeTestData {
                 "программирования",
                 "Родной русский, английский \"upper intermediate\""
         ));
-/*
         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization(
                         new Link("Coursera", "https://www.coursera.org/course/progfun"),
@@ -177,7 +176,6 @@ public class ResumeTestData {
                                 ""
                         ))
         ));
-*/
         return resume;
     }
 }

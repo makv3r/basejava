@@ -41,6 +41,10 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getUuid() {
         return uuid;
     }
@@ -87,12 +91,16 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     @Override
     public String toString() {
-        return "Resume{" +
-                "uuid='" + uuid + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", contacts=" + contacts +
-                ", sections=" + sections +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(getFullName()).append("\t").append(getUuid()).append(System.lineSeparator()).append(System.lineSeparator());
+        for (ContactType type : ContactType.values()) {
+            sb.append(type.getTitle()).append(": ").append(contacts.get(type)).append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+        for (SectionType type : SectionType.values()) {
+            sb.append(type.getTitle()).append(System.lineSeparator()).append(sections.get(type)).append(System.lineSeparator());
+        }
+        return sb.toString();
     }
 
     @Override
