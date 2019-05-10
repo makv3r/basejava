@@ -1,4 +1,5 @@
 <%@ page import="com.thunder.webapp.model.*" %>
+<%@ page import="com.thunder.webapp.util.DateUtil" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 
@@ -71,8 +72,8 @@
                                     </c:if>
                                     <c:forEach var="activity" items="${organization.activities}">
                                         <jsp:useBean id="activity" type="Organization.Activity"/>
-                                        <c:set var="startDate" value="${activity.startDate.format(DateTimeFormatter.ofPattern(\"MM/yyyy\"))}"/>
-                                        <c:set var="endDate" value="${activity.endDate.format(DateTimeFormatter.ofPattern(\"MM/yyyy\"))}"/>
+                                        <c:set var="startDate" value="${DateUtil.format(activity.startDate)}"/>
+                                        <c:set var="endDate" value="${DateUtil.format(activity.endDate)}"/>
                                         <c:if test="${endDate == '01/3000'}">
                                             <c:set var="endDate" value="по настоящее время"/>
                                         </c:if>

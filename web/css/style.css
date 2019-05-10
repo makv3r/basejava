@@ -1,14 +1,14 @@
 header {
-    background: none repeat scroll 0 0 #4A4A4A;
-    color: #4A4A4A;
+    background: none repeat scroll 0 0 #EEEEEE;
+    color: #EEEEEE;
     font-size: 18px;
     padding: 0px 0px;
     text-align: left;
 }
 
 footer {
-    background: none repeat scroll 0 0 #4A4A4A;
-    color: #4A4A4A;
+    background: none repeat scroll 0 0 #1C6EA4;
+    color: #1C6EA4;
     font-size: 18px;
     padding: 0px 0px;
     text-align: left;
@@ -19,72 +19,102 @@ section {
     margin: auto;
 }
 
-body {background-color: #4A4A4A;}
+body {background-color: #EEEEEE;}
 
-a { color: darkorange }
+/* a { color: #68a54b } */
+
+input.DATE {
+    width: 30%;
+    background-color: whitesmoke;
+    border: 2px solid #1C6EA4;
+}
 
 input, textarea {
     width: 100%;
-    background-color: gainsboro;
+    background-color: whitesmoke;
+    border: 2px solid #1C6EA4;
 }
 
 /* Generated Table CSS */
 
 table.MainTable {
-    border: 2px solid #000000;
-    background-color: #4A4A4A;
+    border: 3px solid #1C6EA4;
+    background-color: #EEEEEE;
     width: 100%;
     text-align: left;
     border-collapse: collapse;
 }
 table.MainTable td, table.MainTable th {
-    border: 1px solid #000000;
-    padding: 4px 10px;
+    border: 1px solid #AAAAAA;
+    padding: 3px 6px;
 }
 table.MainTable tbody td {
     font-size: 15px;
-    color: #E6E6E6;
 }
 table.MainTable thead {
-    background: #000000;
+    background: #1C6EA4;
+    border-bottom: 2px solid #1C6EA4;
 }
 table.MainTable thead th {
     font-size: 18px;
     font-weight: bold;
-    color: #E6E6E6;
-    text-align: left;
-    border-left: 0px solid #4A4A4A;
+    color: #FFFFFF;
+    border-left: 7px solid #1C6EA4;
 }
 table.MainTable thead th:first-child {
     border-left: none;
 }
 
 table.MainTable tfoot td {
-    font-size: 12px;
+    font-size: 14px;
+}
+table.MainTable tfoot .links {
+    text-align: right;
+}
+table.MainTable tfoot .links a{
+    display: inline-block;
+    background: #1C6EA4;
+    color: #FFFFFF;
+    padding: 2px 8px;
+    border-radius: 5px;
 }
 
 /* Generated Button CSS */
 
 .button {
-    -moz-box-shadow:inset 0px 30px 0px -15px #b54b3a;
-    -webkit-box-shadow:inset 0px 30px 0px -15px #b54b3a;
-    box-shadow:inset 0px 34px 0px -15px #b54b3a;
-    background-color:#a73f2d;
-    border:1px solid #241d13;
+    -moz-box-shadow:inset 0px 1px 0px 0px #9acc85;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #9acc85;
+    box-shadow:inset 0px 1px 0px 0px #9acc85;
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #74ad5a), color-stop(1, #68a54b));
+    background:-moz-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+    background:-webkit-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+    background:-o-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+    background:-ms-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+    background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#74ad5a', endColorstr='#68a54b',GradientType=0);
+    background-color:#74ad5a;
+    border:1px solid #3b6e22;
     display:inline-block;
     cursor:pointer;
     color:#ffffff;
     font-family:Arial;
-    font-size:15px;
+    font-size:13px;
     font-weight:bold;
-    padding:9px 20px;
+    padding:3px 10px;
     text-decoration:none;
-    text-shadow:0px -1px 0px #7a2a1d;
 }
 .button:hover {
-    background-color:#b34332;
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #68a54b), color-stop(1, #74ad5a));
+    background:-moz-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+    background:-webkit-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+    background:-o-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+    background:-ms-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+    background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#68a54b', endColorstr='#74ad5a',GradientType=0);
+    background-color:#68a54b;
 }
 .button:active {
     position:relative;
     top:1px;
 }
+

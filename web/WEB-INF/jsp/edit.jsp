@@ -1,4 +1,6 @@
 <%@ page import="com.thunder.webapp.model.*" %>
+<%@ page import="com.thunder.webapp.util.DateUtil" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -31,8 +33,7 @@
             <c:forEach var="contactType" items="<%=ContactType.values()%>">
                 <tr>
                     <td><b>${contactType.title}</b></td>
-                    <td><input type="text" name="${contactType.name()}" size=50
-                               value="${resume.getContact(contactType)}"></td>
+                    <td><input type="text" name="${contactType.name()}" value="${resume.getContact(contactType)}"></td>
                 </tr>
             </c:forEach>
 
@@ -56,6 +57,43 @@
                     </c:when>
 
                     <c:when test="${sectionType.equals(SectionType.EXPERIENCE) || sectionType.equals(SectionType.EDUCATION)}">
+                        <tr>
+                            <td><b>${sectionType.title}</b></td>
+                            <td>
+                                <c:forEach items="${(resume.getSection(sectionType)).getOrganizations()}" var="organization" varStatus="counter">
+                                    <br>
+                                    <table class="MainTable"><tbody>
+                                     <tr>
+                                        <th>Название</th>
+                                        <th><input type="text" value="${organization.getLink().getName()}" name="${sectionType}"></th>
+                                    </tr>
+                                    <tr>
+                                        <th>Сайт</th>
+                                        <th><input type="text" value="${organization.getLink().getUrl()}" name="${sectionType}url"></th>
+                                    </tr>
+                                    <c:forEach items="${organization.getActivities()}" var="activity">
+                                        <jsp:useBean id="activity" type="Organization.Activity"/>
+                                        <tr>
+                                            <td>От / До</td>
+                                            <td>
+                                                <input class="DATE" type="text" value="${DateUtil.format(activity.startDate)}" name="${sectionType}${counter.index}startDate" placeholder="MM/yyyy">
+                                                <input class="DATE" type="text" value="${DateUtil.format(activity.endDate)}" name="${sectionType}${counter.index}endDate" placeholder="MM/yyyy">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Должность</td>
+                                            <td><input type="text" value="${activity.getTitle()}" name="${sectionType}${counter.index}title"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Описание</td>
+                                            <td><textarea name="${sectionType}${counter.index}description" rows=5>${activity.getDescription()}</textarea></td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody></table><br>
+                                </c:forEach>
+
+                            </td>
+                        </tr>
                     </c:when>
 
                 </c:choose>

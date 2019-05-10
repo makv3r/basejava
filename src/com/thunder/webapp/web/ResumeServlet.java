@@ -4,6 +4,8 @@ import com.thunder.webapp.Config;
 import com.thunder.webapp.ResumeTestData;
 import com.thunder.webapp.model.*;
 import com.thunder.webapp.storage.Storage;
+import com.thunder.webapp.util.DateUtil;
+import com.thunder.webapp.util.StringUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -51,7 +54,7 @@ public class ResumeServlet extends HttpServlet {
         for (SectionType sectionType : SectionType.values()) {
             String value = request.getParameter(sectionType.name());
             String[] values = request.getParameterValues(sectionType.name());
-            if (value == null || value.trim().length() == 0 && values.length < 2) {
+            if (StringUtil.isEmpty(value) && values.length < 2) {
                 resume.getSections().remove(sectionType);
             } else {
                 switch (sectionType) {
@@ -65,6 +68,26 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
+                        List<Organization> organizations = new ArrayList<>();
+                        String[] urls = request.getParameterValues(sectionType.name() + "url");
+                        for (int i = 0; i < values.length; i++) {
+                            String name = values[i];
+                            if (!StringUtil.isEmpty(name)) {
+                                List<Organization.Activity> activity = new ArrayList<>();
+                                String pfx = sectionType.name() + i;
+                                String[] startDates = request.getParameterValues(pfx + "startDate");
+                                String[] endDates = request.getParameterValues(pfx + "endDate");
+                                String[] allPositions = request.getParameterValues(pfx + "title");
+                                String[] allInformation = request.getParameterValues(pfx + "description");
+                                for (int j = 0; j < allPositions.length; j++) {
+                                    if (!StringUtil.isEmpty(allPositions[j])) {
+                                        activity.add(new Organization.Activity(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), allPositions[j], allInformation[j]));
+                                    }
+                                }
+                                organizations.add(new Organization(new Link(name, urls[i]), activity));
+                            }
+                        }
+                        resume.addSection(sectionType, new OrganizationSection(organizations));
                         break;
                     default:
                         throw new IllegalArgumentException();
@@ -96,15 +119,51 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "create":
-                resume = new Resume();
+                resume = Resume.EMPTY;
                 break;
             case "generate":
-                storage.save(ResumeTestData.fillResume(UUID.randomUUID().toString(), generateString()));
+                storage.save(ResumeTestData.fillResume(UUID.randomUUID().toString(), StringUtil.generateString()));
                 response.sendRedirect("resume");
                 return;
             case "view":
+                resume = storage.get(uuid);
+                break;
             case "edit":
                 resume = storage.get(uuid);
+                for (SectionType sectionType : SectionType.values()) {
+                    AbstractSection section = resume.getSection(sectionType);
+                    switch (sectionType) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = TextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENTS:
+                        case QUALIFICATIONS:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            OrganizationSection organizationsSection = (OrganizationSection) section;
+                            List<Organization> emptyFirstOrganizations = new ArrayList<>();
+                            emptyFirstOrganizations.add(Organization.EMPTY);
+                            if (organizationsSection != null) {
+                                for (Organization org : organizationsSection.getOrganizations()) {
+                                    List<Organization.Activity> emptyFirstPositions = new ArrayList<>();
+                                    emptyFirstPositions.add(Organization.Activity.EMPTY);
+                                    emptyFirstPositions.addAll(org.getActivities());
+                                    emptyFirstOrganizations.add(new Organization(org.getLink(), emptyFirstPositions));
+                                }
+                            }
+                            section = new OrganizationSection(emptyFirstOrganizations);
+                            break;
+
+                    }
+                    resume.addSection(sectionType, section);
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
@@ -115,19 +174,6 @@ public class ResumeServlet extends HttpServlet {
         ).forward(request, response);
     }
 
-    private String generateString() {
-        int leftLimit = 97;
-        int rightLimit = 122;
-        int targetStringLength = 10;
-        Random random = new Random();
-        StringBuilder buffer = new StringBuilder(targetStringLength);
-        for (int i = 0; i < targetStringLength; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
-        }
-        return buffer.toString();
-    }
 }
 
 

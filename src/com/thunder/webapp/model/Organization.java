@@ -16,6 +16,8 @@ import java.util.Objects;
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public static final Organization EMPTY = new Organization(new Link("",""), Activity.EMPTY);
+
     private Link link;
     private List<Activity> activities;
 
@@ -71,6 +73,9 @@ public class Organization implements Serializable {
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Activity implements Serializable {
         private static final long serialVersionUID = 1L;
+
+        public static final Activity EMPTY = new Activity();
+
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
